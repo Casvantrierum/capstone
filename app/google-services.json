@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "250484704684",
+    "firebase_url": "https://skits-pdj-trophy.firebaseio.com",
+    "project_id": "skits-pdj-trophy",
+    "storage_bucket": "skits-pdj-trophy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250484704684:android:2132a7a46d15a2db4ce609",
+        "android_client_info": {
+          "package_name": "com.example.capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250484704684-18eir8kh9mr64l676q3170ehrcf3hfhr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD56sHDlWT74WP14Ycg9BnljNinNVTq8tI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250484704684-18eir8kh9mr64l676q3170ehrcf3hfhr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
