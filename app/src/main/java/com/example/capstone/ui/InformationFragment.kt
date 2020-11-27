@@ -1,4 +1,4 @@
-package com.example.capstone.ui.information
+package com.example.capstone.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.example.capstone.ui.dashboard
+package com.example.capstone.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.example.capstone.R
 import com.example.capstone.model.Attempt
 import com.example.capstone.viewmodel.AttemptsListViewModel
 
 
-class DashboardFragment : Fragment() {
+class StandingFragment : Fragment() {
 
     private val attemptsViewModel: AttemptsListViewModel by activityViewModels()
 
@@ -29,7 +28,7 @@ class DashboardFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.fragment_standing, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
