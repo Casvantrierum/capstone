@@ -1,9 +1,11 @@
 package com.example.capstone
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -15,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+//        attemptsListViewModel = ViewModelProvider(this).get(AttemptsListViewModel::class.java)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,5 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseFirestore.setLoggingEnabled(true)
         FirebaseApp.initializeApp(this)
+
+        val attemptsListViewModel: AttemptsListViewModel = ViewModelProvider(this).get(AttemptsListViewModel::class.java)
+        attemptsListViewModel.getAttemptsList()
     }
 }

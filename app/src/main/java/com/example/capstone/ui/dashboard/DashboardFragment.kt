@@ -21,8 +21,7 @@ class DashboardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        attemptsViewModel.getAttemptsList()
-
+        //attemptsViewModel.getAttemptsList()
     }
 
     override fun onCreateView(
