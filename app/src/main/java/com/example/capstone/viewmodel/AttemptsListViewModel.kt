@@ -23,7 +23,6 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
         get() = _errorText
 
     fun getAttemptsList() {
-        Log.i("OK", "In the vm get attempt")
         viewModelScope.launch {
             try {
                 attemptsListRepository.getAttemptsList()
@@ -35,6 +34,4 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
             }
         }
     }
-
-
 }

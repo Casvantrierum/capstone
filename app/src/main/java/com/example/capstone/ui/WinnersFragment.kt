@@ -8,11 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.capstone.R
+import com.example.capstone.model.Attempt
+import com.example.capstone.model.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
+import com.example.capstone.viewmodel.SkatersListViewModel
 
 class WinnersFragment : Fragment() {
 
-    private val viewModel: AttemptsListViewModel by activityViewModels()
+
+    private val attemptsViewModel: AttemptsListViewModel by activityViewModels()
+    private val skatersViewModel: SkatersListViewModel by activityViewModels()
+
+    private var attemptsList = arrayListOf<Attempt>()
+    private var skatersList = arrayListOf<Skater>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -28,10 +36,15 @@ class WinnersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        viewModel.attemptsList.observe(viewLifecycleOwner, {
+        attemptsViewModel.attemptsList.observe(viewLifecycleOwner, {
             val attemptsList = it
-            //make button visible and clickable
-            Log.i("OBSERVE", "home fragment: ${attemptsList}" )
+            Log.i("OBSERVE A", "home fragment: ${attemptsList}" )
+        })
+
+        skatersViewModel.skatersList.observe(viewLifecycleOwner, {
+            skatersList.clear()
+            skatersList = it.skatersList
+            Log.i("OBSERVE S", "dashboard fragment: ${skatersList}" )
         })
     }
 }

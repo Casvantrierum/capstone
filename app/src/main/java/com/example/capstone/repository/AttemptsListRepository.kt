@@ -1,22 +1,17 @@
 package com.example.capstone.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.capstone.model.Attempt
 import com.example.capstone.model.AttemptsList
-import com.example.capstone.model.Skater
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
-import java.sql.Timestamp
 
 class AttemptsListRepository {
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private var attemptDocument =
+    private var attemptsCollection =
         firestore.collection("Attempts")
 
     private val _attemptsList: MutableLiveData<AttemptsList> = MutableLiveData()
@@ -31,7 +26,6 @@ class AttemptsListRepository {
         get() = _createSuccess
 
     suspend fun getAttemptsList() {
-        Log.i("OK", "In the repo get attempt")
 
         val list = arrayListOf<Attempt>()
 
@@ -39,7 +33,7 @@ class AttemptsListRepository {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
 //
-                val dataAttempts = attemptDocument
+                attemptsCollection
                     .get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {

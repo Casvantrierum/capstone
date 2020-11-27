@@ -11,14 +11,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.capstone.viewmodel.AttemptsListViewModel
+import com.example.capstone.viewmodel.SkatersListViewModel
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-//        attemptsListViewModel = ViewModelProvider(this).get(AttemptsListViewModel::class.java)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,5 +36,8 @@ class MainActivity : AppCompatActivity() {
 
         val attemptsListViewModel: AttemptsListViewModel = ViewModelProvider(this).get(AttemptsListViewModel::class.java)
         attemptsListViewModel.getAttemptsList()
+
+        val skatersListViewModel: SkatersListViewModel = ViewModelProvider(this).get(SkatersListViewModel::class.java)
+        skatersListViewModel.getSkatersList()
     }
 }

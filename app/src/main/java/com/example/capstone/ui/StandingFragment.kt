@@ -9,19 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.capstone.R
 import com.example.capstone.model.Attempt
+import com.example.capstone.model.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
+import com.example.capstone.viewmodel.SkatersListViewModel
 
 
 class StandingFragment : Fragment() {
 
     private val attemptsViewModel: AttemptsListViewModel by activityViewModels()
+    private val skatersViewModel: SkatersListViewModel by activityViewModels()
 
     private var attemptsList = arrayListOf<Attempt>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //attemptsViewModel.getAttemptsList()
-    }
+    private var skatersList = arrayListOf<Skater>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -37,8 +36,13 @@ class StandingFragment : Fragment() {
         attemptsViewModel.attemptsList.observe(viewLifecycleOwner, {
             attemptsList.clear()
             attemptsList = it.attemptsList
-            //make button visible and clickable
-            Log.i("OBSERVE", "dashboard fragment: ${attemptsList}" )
+            Log.i("OBSERVE A", "dashboard fragment: ${attemptsList}" )
+        })
+
+        skatersViewModel.skatersList.observe(viewLifecycleOwner, {
+            skatersList.clear()
+            skatersList = it.skatersList
+            Log.i("OBSERVE S", "dashboard fragment: ${skatersList}" )
         })
     }
 }
