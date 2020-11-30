@@ -41,7 +41,7 @@ class WinnersFragment : Fragment() {
             Log.i("OBSERVE A", "home fragment: ${attemptsList}" )
         })
 
-        skatersViewModel.skatersList.observe(viewLifecycleOwner, {
+        skatersViewModel.maleSkatersList.observe(viewLifecycleOwner, {
             skatersList.clear()
             skatersList = it.skatersList
             Log.i("OBSERVE S", "dashboard fragment: ${skatersList}" )

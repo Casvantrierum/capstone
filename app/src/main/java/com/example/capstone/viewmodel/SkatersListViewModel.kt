@@ -14,7 +14,8 @@ class SkatersListViewModel(application: Application) : AndroidViewModel(applicat
     private val TAG = "FIRESTORE"
     private val skatersListRepository: SkatersListRepository = SkatersListRepository()
 
-    val skatersList: LiveData<SkatersList> = skatersListRepository.skatersList
+    val maleSkatersList: LiveData<SkatersList> = skatersListRepository.maleSkatersList
+    val femaleSkatersList: LiveData<SkatersList> = skatersListRepository.femaleSkatersList
 
     val createSuccess: LiveData<Boolean> = skatersListRepository.createSuccess
 

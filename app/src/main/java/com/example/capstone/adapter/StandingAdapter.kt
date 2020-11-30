@@ -1,5 +1,6 @@
 package com.example.capstone.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,16 +27,21 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
     override fun getItemCount(): Int = attemptsList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.databind(attemptsList[position], position)
+        val skatersFound : List<Skater> = skatersList.filter{ s -> (s.id == attemptsList[position].skaterId)}
+        Log.i("OK", "in onBindViewHolder skaterslist : $skatersList")
+        if(skatersFound.size == 1 ) {
+            val skater = skatersFound.single()
+            Log.i("JA","skater: $skater")
+            holder.databind(attemptsList[position], skater, position)
+        }
+        else Log.i("NEE", "dit gaat fout voor ${attemptsList[position].skaterId}")
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun databind(attempt: Attempt, position: Int) {
+        fun databind(attempt: Attempt, skater: Skater, position: Int) {
             val ranking = position+1
-            var skater: Skater = skatersList?.single{ s -> s.id == attempt.skaterId }
-
             itemView.tvRank.text = "$ranking."
-            itemView.tvName.text = skater?.name
+            itemView.tvName.text = skater.name
             itemView.tvTime.text = attempt.time
         }
     }

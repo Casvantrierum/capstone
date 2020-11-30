@@ -11,6 +11,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Theme.Capstone.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="BottomNavigationTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorAccent</item>
     </style>

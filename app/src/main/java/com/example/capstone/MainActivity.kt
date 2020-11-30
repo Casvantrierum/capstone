@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
 
         val attemptsListViewModel: AttemptsListViewModel = ViewModelProvider(this).get(AttemptsListViewModel::class.java)
-        attemptsListViewModel.getAttemptsList()
+        attemptsListViewModel.getAttemptsList(null)
 
         val skatersListViewModel: SkatersListViewModel = ViewModelProvider(this).get(SkatersListViewModel::class.java)
         skatersListViewModel.getSkatersList()
