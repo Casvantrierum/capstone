@@ -40,6 +40,7 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
             itemView.tvRank.text = "$ranking."
             itemView.tvName.text = skater.name
             itemView.tvTime.text = attempt.time
+            itemView.tvDate.text = attempt.date
         }
     }
 }

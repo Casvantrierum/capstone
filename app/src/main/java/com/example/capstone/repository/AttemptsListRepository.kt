@@ -10,6 +10,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
+import java.sql.Date
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 class AttemptsListRepository {
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -37,8 +40,15 @@ class AttemptsListRepository {
             val season      = document.data["season"].toString().toInt()
             val time        = document.data["time"].toString()
             val weather     = document.data["weather"].toString()
-            list.add(Attempt(id, skaterId, clockedBy,season, time, weather))
-            Log.i("ADD", "$skaterId : $time")
+
+            val dateInput = document.data["date"] as com.google.firebase.Timestamp
+            val milliseconds = dateInput.seconds * 1000 + dateInput.nanoseconds / 1000000
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val netDate = Date(milliseconds)
+            val date = sdf.format(netDate).toString()
+
+            list.add(Attempt(id, skaterId, clockedBy,season, time, weather, date))
+            Log.i("ADD", "$skaterId : $date")
         }
         return list
     }
