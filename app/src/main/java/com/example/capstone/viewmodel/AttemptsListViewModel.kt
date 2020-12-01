@@ -59,7 +59,8 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
         else {
             for(attempt in attemptsListRepository.attemptsList.value?.attemptsList!!){
                 val skatersFound : List<Skater> = skatersList.filter{ s -> s.id == attempt.skaterId}
-                if(skatersFound.size == 1 ) {
+                val fasterAttemptsSameSkaterFound : List<Attempt> = attemptsListRepository.attemptsList.value?.attemptsList!!.filter{ a -> a.skaterId == attempt.skaterId && a.time < attempt.time}
+                if(skatersFound.size == 1  && fasterAttemptsSameSkaterFound.isEmpty()) {
                     filteredList.add(attempt)
                 }
             }
