@@ -17,6 +17,7 @@ import com.example.capstone.adapter.StandingAdapter
 import com.example.capstone.model.Attempt
 import com.example.capstone.model.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
+import com.example.capstone.viewmodel.SkaterViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import kotlinx.android.synthetic.main.fragment_standing.*
 
@@ -25,6 +26,7 @@ class StandingFragment : Fragment() {
 
     private val attemptsListViewModel: AttemptsListViewModel by viewModels()
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
+    private val skaterViewModel: SkaterViewModel by activityViewModels()
 
     private var attemptsList = arrayListOf<Attempt>()
     private var attemptsListFiltered = arrayListOf<Attempt>()
@@ -139,6 +141,7 @@ class StandingFragment : Fragment() {
     private fun onSkaterClick(skater: Skater) {
         //Log.i("CLICK", "${attempt.time}")
         Log.i("CLICK", "${skater.name}")
+        skaterViewModel.setSkater(skater)
         findNavController().navigate(R.id.action_navigation_standing_to_skaterFragment)
     }
 }
