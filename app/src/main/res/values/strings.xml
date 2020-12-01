@@ -9,4 +9,6 @@
     <string name="ThanksSpeedSkatingResults">This app makes use of the http://www.speedskatingresults.com public API. "</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

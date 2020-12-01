@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
@@ -52,7 +53,7 @@ class StandingFragment : Fragment() {
         attemptsListViewModel.getAttemptsList(season)
         tvSeason.text = "Season $season-${season+1}"
 
-        standingAdapter = StandingAdapter(attemptsListFiltered, skatersList)
+        standingAdapter = StandingAdapter(attemptsListFiltered, skatersList, ::onSkaterClick)
         rvStanding.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         rvStanding.adapter = standingAdapter
 
@@ -132,5 +133,12 @@ class StandingFragment : Fragment() {
             }
             attemptsListViewModel.getAttemptListFiltered(skatersList)
         })
+    }
+
+
+    private fun onSkaterClick(skater: Skater) {
+        //Log.i("CLICK", "${attempt.time}")
+        Log.i("CLICK", "${skater.name}")
+        findNavController().navigate(R.id.action_navigation_standing_to_skaterFragment)
     }
 }

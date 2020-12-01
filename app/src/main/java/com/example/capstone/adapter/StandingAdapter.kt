@@ -12,7 +12,7 @@ import com.example.capstone.R
 import com.example.capstone.model.Skater
 import kotlinx.android.synthetic.main.item_standing.view.*
 
-class StandingAdapter (private val attemptsList: List<Attempt>, private val skatersList: List<Skater>) :
+class StandingAdapter (private val attemptsList: List<Attempt>, private val skatersList: List<Skater>, private val onClick: (Skater) -> Unit) :
     RecyclerView.Adapter<StandingAdapter.ViewHolder>() {
 
     private lateinit var context: Context
@@ -41,6 +41,14 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
             itemView.tvName.text = skater.name
             itemView.tvTime.text = attempt.time
             itemView.tvDate.text = attempt.date
+        }
+
+        init {
+            itemView.setOnClickListener {
+                val skatersFound: Skater =
+                    skatersList.single { s -> (s.id == attemptsList[adapterPosition].skaterId) }
+                onClick(skatersFound)
+            }
         }
     }
 }

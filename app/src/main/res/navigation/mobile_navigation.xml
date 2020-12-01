@@ -15,11 +15,20 @@
         android:id="@+id/navigation_standing"
         android:name="com.example.capstone.ui.StandingFragment"
         android:label="@string/title_standing"
-        tools:layout="@layout/fragment_standing" />
+        tools:layout="@layout/fragment_standing" >
+        <action
+            android:id="@+id/action_navigation_standing_to_skaterFragment"
+            app:destination="@id/skaterFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_information"
         android:name="com.example.capstone.ui.InformationFragment"
         android:label="@string/title_info"
         tools:layout="@layout/fragment_information" />
+    <fragment
+        android:id="@+id/skaterFragment"
+        android:name="com.example.capstone.ui.SkaterFragment"
+        android:label="fragment_skater"
+        tools:layout="@layout/fragment_skater" />
 </navigation>
