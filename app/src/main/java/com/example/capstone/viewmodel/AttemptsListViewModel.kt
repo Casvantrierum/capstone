@@ -34,9 +34,11 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             try {
                 if (season != null){
+                    Log.i("JA", "naar getAttemptsList want season = $season")
                     attemptsListRepository.getAttemptsList(season)
                 }
                 else {
+                    Log.i("JA", "naar getAttemptsListAllSeasons want season = $season")
                     attemptsListRepository.getAttemptsListAllSeasons()
                 }
 
@@ -50,12 +52,18 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
 
     fun getAttemptListFiltered(skatersList: List<Skater>){
         val filteredList: ArrayList<Attempt> = arrayListOf()
-        for(attempt in attemptsListRepository.attemptsList.value!!.attemptsList){
-            val skatersFound : List<Skater> = skatersList.filter{ s -> s.id == attempt.skaterId}
-            if(skatersFound.size == 1 ) {
-                filteredList.add(attempt)
+        if (skatersList.isEmpty()
+                || attemptsList.value == null
+                || attemptsList.value!!.attemptsList.isEmpty())
+            _attemptsListFiltered.value = AttemptsList(filteredList)
+        else {
+            for(attempt in attemptsListRepository.attemptsList.value?.attemptsList!!){
+                val skatersFound : List<Skater> = skatersList.filter{ s -> s.id == attempt.skaterId}
+                if(skatersFound.size == 1 ) {
+                    filteredList.add(attempt)
+                }
             }
+            _attemptsListFiltered.value = AttemptsList(filteredList)
         }
-        _attemptsListFiltered.value = AttemptsList(filteredList)
     }
 }

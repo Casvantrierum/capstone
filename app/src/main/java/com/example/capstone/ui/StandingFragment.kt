@@ -32,7 +32,8 @@ class StandingFragment : Fragment() {
     private var maleSkatersList = arrayListOf<Skater>()
     private var femaleSkatersList = arrayListOf<Skater>()
 
-    private var season: Int = 20
+    private var season: Int = 2020
+    private var currentSeason: Int = 2020 //TODO get with date
     private var sex: String = "m"
 
     private lateinit var standingAdapter: StandingAdapter
@@ -48,7 +49,8 @@ class StandingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        attemptsListViewModel.getAttemptsList(2020)
+        attemptsListViewModel.getAttemptsList(season)
+        tvSeason.text = "Season $season-${season+1}"
 
         standingAdapter = StandingAdapter(attemptsListFiltered, skatersList)
         rvStanding.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -59,9 +61,6 @@ class StandingFragment : Fragment() {
             attemptsListViewModel.getAttemptListFiltered(skatersList)
             standingAdapter.notifyDataSetChanged()
 
-            Log.i("MALE", "$maleSkatersList")
-            Log.i("FEMALE", "$femaleSkatersList")
-
             skatersList.clear()
             if (radio.text == "Male"){//TODO HC
                 sex = "m"
@@ -71,30 +70,32 @@ class StandingFragment : Fragment() {
                 sex = "f"
                 skatersList.addAll(femaleSkatersList)
             }
-
-
-            Log.i("skaters list", "$skatersList")
-
             attemptsListViewModel.getAttemptListFiltered(skatersList)
-
-            Toast.makeText(context, " On checked change : ${radio.text}",
-                    Toast.LENGTH_SHORT).show()
         }
 
         view.findViewById<ImageButton>(R.id.ibUp).setOnClickListener {
             season++
-            tvSeason.text = "Season 20$season-${season+1}"
 
+            if(season > currentSeason + 1) season--
+            else if(season == currentSeason + 1){
+                attemptsListViewModel.getAttemptsList(null)
+                tvSeason.text = "All time" //TODO hc
+            }
+            else {
+                attemptsListViewModel.getAttemptsList(season)
+                tvSeason.text = "Season $season-${season + 1}" //TODO hc
+            }
         }
         view.findViewById<ImageButton>(R.id.ibDown).setOnClickListener {
             season--
-            tvSeason.text = "Season 20$season-${season+1}"
+            tvSeason.text = "Season $season-${season+1}" //TODO hc
+            attemptsListViewModel.getAttemptsList(season)
         }
 
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {
+            Log.i("OBSERVE A", "${it.attemptsList}")
             attemptsList.clear()
             attemptsList.addAll(it.attemptsList)
-            Log.i("OBSERVE A", "standing fragment: $attemptsList" )
 
             attemptsListViewModel.getAttemptListFiltered(skatersList)
             standingAdapter.notifyDataSetChanged()
@@ -103,7 +104,6 @@ class StandingFragment : Fragment() {
         attemptsListViewModel.attemptsListFiltered.observe(viewLifecycleOwner, {
             attemptsListFiltered.clear()
             attemptsListFiltered.addAll(it.attemptsList)
-            Log.i("OBSERVE AF", "standing fragment: $attemptsListFiltered" )
 
             standingAdapter.notifyDataSetChanged()
         })
@@ -111,9 +111,6 @@ class StandingFragment : Fragment() {
         skatersListViewModel.maleSkatersList.observe(viewLifecycleOwner, {
             maleSkatersList.clear()
             maleSkatersList.addAll(it.skatersList)
-            Log.i("OBSERVE S MALE", "standing fragment: $maleSkatersList" )
-
-            standingAdapter.notifyDataSetChanged()
 
             if (sex == "m"){
                 skatersList.clear()
@@ -126,7 +123,6 @@ class StandingFragment : Fragment() {
         skatersListViewModel.femaleSkatersList.observe(viewLifecycleOwner, {
             femaleSkatersList.clear()
             femaleSkatersList.addAll(it.skatersList)
-            Log.i("OBSERVE S FEMALE", "standing fragment: $femaleSkatersList" )
 
             attemptsListViewModel.getAttemptListFiltered(skatersList)
 
@@ -134,8 +130,7 @@ class StandingFragment : Fragment() {
                 skatersList.clear()
                 skatersList.addAll(femaleSkatersList)
             }
-
-            standingAdapter.notifyDataSetChanged()
+            attemptsListViewModel.getAttemptListFiltered(skatersList)
         })
     }
 }

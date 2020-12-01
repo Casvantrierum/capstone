@@ -15,10 +15,8 @@ import kotlinx.coroutines.withTimeout
 class SkatersListRepository {
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    private var skatersMaleCollection =
-            firestore.collection("Skaters").whereEqualTo("sex", "m")
-    private var skatersFemaleCollection =
-            firestore.collection("Skaters").whereEqualTo("sex", "f")
+    private var skatersCollection =
+            firestore.collection("Skaters")
 
     private val _maleSkatersList: MutableLiveData<SkatersList> = MutableLiveData()
     val maleSkatersList: LiveData<SkatersList>
@@ -33,39 +31,44 @@ class SkatersListRepository {
     val createSuccess: LiveData<Boolean>
         get() = _createSuccess
 
-    private fun docsToSkatersList(documents: QuerySnapshot): ArrayList<Skater> {
-        val list = arrayListOf<Skater>()
+    private fun splitSkatersList(documents: QuerySnapshot) {
+        val listMale = arrayListOf<Skater>()
+        val listFemale = arrayListOf<Skater>()
         for (document in documents) {
             val id      = document.id.toInt()
             var name    = document.data["name"].toString()
             var sex     = document.data["sex"].toString()
             val ssrId   = document.data["ssrId"].toString().toInt()
-            list.add(Skater(id, name, sex, ssrId))
+            if (sex == "f") {
+                Log.i("ADD F", "$name")
+                listFemale.add(Skater(id, name, sex, ssrId))
+            }
+            else {
+                Log.i("ADD M", "$name")
+                listMale.add(Skater(id, name, sex, ssrId))
+            }
         }
-        Log.i("ok", "list: $list")
-        return list
+        _maleSkatersList.value = SkatersList(listMale)
+        _femaleSkatersList.value = SkatersList(listFemale)
     }
 
     suspend fun getSkatersList() {
-        val listMale = arrayListOf<Skater>()
-        val listFemale = arrayListOf<Skater>()
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(20_000) {
-                skatersFemaleCollection
+//                skatersFemaleCollection
+//                        .get()
+//                        .addOnSuccessListener { documents ->
+//                            listFemale.addAll(docsToSkatersList(documents))
+//                        }
+//                        .await()
+//                _femaleSkatersList.value = SkatersList(listFemale)
+                skatersCollection
                         .get()
                         .addOnSuccessListener { documents ->
-                            listFemale.addAll(docsToSkatersList(documents))
+                            splitSkatersList(documents)
                         }
                         .await()
-                _femaleSkatersList.value = SkatersList(listFemale)
-                skatersMaleCollection
-                        .get()
-                        .addOnSuccessListener { documents ->
-                            listMale.addAll(docsToSkatersList(documents))
-                        }
-                        .await()
-                _maleSkatersList.value = SkatersList(listMale)
             }
         }  catch (e : Exception) {
             throw SkatersListRetrievalError("Retrieval-firebase-task was unsuccessful")

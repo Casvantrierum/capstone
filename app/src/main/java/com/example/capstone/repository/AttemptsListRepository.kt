@@ -38,13 +38,14 @@ class AttemptsListRepository {
             val time        = document.data["time"].toString()
             val weather     = document.data["weather"].toString()
             list.add(Attempt(id, skaterId, clockedBy,season, time, weather))
+            Log.i("ADD", "$skaterId : $time")
         }
         return list
     }
 
     suspend fun getAttemptsListAllSeasons() {
+        Log.i("JA", "in getAttemptsListAllSeasons")
         val list = arrayListOf<Attempt>()
-
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
@@ -62,11 +63,13 @@ class AttemptsListRepository {
     }
 
     suspend fun getAttemptsList(season: Int) {
+        Log.i("JA", "in getAttemptsList")
         var list = arrayListOf<Attempt>()
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
-                attemptsCollection.whereEqualTo("season", season)
+                attemptsCollection
+                        .whereEqualTo("season", season)
                         .get()
                         .addOnSuccessListener { documents ->
                             list.addAll(documentsToSkatersList(documents))
