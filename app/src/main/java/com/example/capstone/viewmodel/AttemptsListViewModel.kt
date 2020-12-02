@@ -50,6 +50,18 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+    fun getAttemptsListSkater(skaterId: Int) {
+        viewModelScope.launch {
+            try {
+                attemptsListRepository.getAttemptsListSkater(skaterId)
+            } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
+                val errorMsg = "Something went wrong while retrieving attempt"
+                Log.e(TAG, ex.message ?: errorMsg)
+                _errorText.value = errorMsg
+            }
+        }
+    }
+
     fun getAttemptListFiltered(skatersList: List<Skater>){
         val filteredList: ArrayList<Attempt> = arrayListOf()
         if (skatersList.isEmpty()

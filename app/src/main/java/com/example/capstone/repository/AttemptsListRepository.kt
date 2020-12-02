@@ -54,7 +54,6 @@ class AttemptsListRepository {
     }
 
     suspend fun getAttemptsListAllSeasons() {
-        Log.i("JA", "in getAttemptsListAllSeasons")
         val list = arrayListOf<Attempt>()
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
@@ -73,7 +72,6 @@ class AttemptsListRepository {
     }
 
     suspend fun getAttemptsList(season: Int) {
-        Log.i("JA", "in getAttemptsList")
         var list = arrayListOf<Attempt>()
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
@@ -85,6 +83,25 @@ class AttemptsListRepository {
                             list.addAll(documentsToSkatersList(documents))
                         }
                         .await()
+                _attemptsList.value = AttemptsList(list);
+            }
+        }  catch (e : Exception) {
+            throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")
+        }
+    }
+
+    suspend fun getAttemptsListSkater(skaterId: Int) {
+        var list = arrayListOf<Attempt>()
+        try {
+            //firestore has support for coroutines via the extra dependency we've added :)
+            withTimeout(5_000) {
+                attemptsCollection
+                    .whereEqualTo("skaterId", skaterId)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        list.addAll(documentsToSkatersList(documents))
+                    }
+                    .await()
                 _attemptsList.value = AttemptsList(list);
             }
         }  catch (e : Exception) {

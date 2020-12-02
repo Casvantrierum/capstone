@@ -96,7 +96,6 @@ class StandingFragment : Fragment() {
         }
 
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {
-            Log.i("OBSERVE A", "${it.attemptsList}")
             attemptsList.clear()
             attemptsList.addAll(it.attemptsList)
 

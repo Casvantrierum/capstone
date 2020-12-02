@@ -1,8 +1,6 @@
 package com.example.capstone.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,8 +37,8 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
             val ranking = position+1
             itemView.tvRank.text = "$ranking."
             itemView.tvName.text = skater.name
-            itemView.tvTime.text = attempt.time
-            itemView.tvDate.text = attempt.date
+            itemView.tvDistance.text = attempt.time
+            itemView.tvTime.text = attempt.date
         }
 
         init {

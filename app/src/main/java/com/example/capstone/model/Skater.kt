@@ -4,5 +4,5 @@ data class Skater (
         val id: Int,
         val name: String,
         val sex: String,
-        val ssrId: Int
+        val ssrId: Int?
 )

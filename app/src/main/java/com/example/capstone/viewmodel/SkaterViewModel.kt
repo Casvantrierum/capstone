@@ -18,4 +18,11 @@ class SkaterViewModel (application: Application) : AndroidViewModel(application)
         Log.i("IN","setSkater()")
         _skater.value = selectedSkater
     }
+
+    fun getSSRResults() {
+        Log.i("IN","getSSRResults()")
+        if (skater.value?.ssrId != 0){
+            Log.i("SSR", "it has an ssr id")
+        }
+    }
 }

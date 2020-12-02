@@ -38,7 +38,7 @@ class SkatersListRepository {
             val id      = document.id.toInt()
             var name    = document.data["name"].toString()
             var sex     = document.data["sex"].toString()
-            val ssrId   = document.data["ssrId"].toString().toInt()
+            val ssrId   = document.data["ssrId"]?.toString()?.toInt()
             if (sex == "f") {
                 Log.i("ADD F", "$name")
                 listFemale.add(Skater(id, name, sex, ssrId))
