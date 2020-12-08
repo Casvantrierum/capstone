@@ -14,4 +14,7 @@
     <string name="skits_site_member">https://www.skits.nl/mijn-vereniging/ledenlijst/%d</string>
     <string name="results">Results</string>
     <string name="prs">Personal records</string>
+    <string name="input_name">Name</string>
+    <string name="skater_info">Skater info</string>
+    <string name="input_skits_id">SKITS ID</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.capstone.ui
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,19 +22,35 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
     private var skatersList = arrayListOf<Skater>()
     var list_of_items = skatersList
+    private val emptySkater = Skater(0,"New skater", "m", null)
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
         val skater = parent.selectedItem as Skater
-        Toast.makeText(
-            parent.context,
-            "ID : ${skater.id} | name: ${skater.name} | sex: ${skater.sex}",
-            Toast.LENGTH_SHORT
-        ).show()
+        if (skater.id != 0){
+            etName.setText(skater.name)
+            etSkitsId.setText(skater.id.toString())
+
+            if (skater.sex == "f") rbFemale.isChecked //TODO HC?
+            else rbMale.isChecked
+
+            etName.isEnabled = false;
+            rbMale.isEnabled = false;
+            rbFemale.isEnabled = false;
+            etSkitsId.isEnabled = false;
+        }
+        else {
+            etName.setText("Name")//TODO hc
+            etSkitsId.setText("SKITS ID")//TODO hc
+
+            etName.isEnabled = true;
+            rbMale.isEnabled = true;
+            rbFemale.isEnabled = true;
+            etSkitsId.isEnabled = true;
+        }
     }
 
     override fun onNothingSelected(arg0: AdapterView<*>) {
-
     }
 
     override fun onCreateView(
@@ -60,9 +77,9 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         skatersListViewModel.allSkatersList.observe(viewLifecycleOwner, {
             skatersList.clear()
+            skatersList.add(emptySkater)
             skatersList.addAll(it.skatersList)
             aa.notifyDataSetChanged()
         })
-
     }
 }
