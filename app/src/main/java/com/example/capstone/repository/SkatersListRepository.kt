@@ -18,6 +18,10 @@ class SkatersListRepository {
     private var skatersCollection =
             firestore.collection("Skaters")
 
+    private val _allSkatersList: MutableLiveData<SkatersList> = MutableLiveData()
+    val allSkatersList: LiveData<SkatersList>
+        get() = _allSkatersList
+
     private val _maleSkatersList: MutableLiveData<SkatersList> = MutableLiveData()
     val maleSkatersList: LiveData<SkatersList>
         get() = _maleSkatersList
@@ -32,6 +36,7 @@ class SkatersListRepository {
         get() = _createSuccess
 
     private fun splitSkatersList(documents: QuerySnapshot) {
+        val listAll = arrayListOf<Skater>()
         val listMale = arrayListOf<Skater>()
         val listFemale = arrayListOf<Skater>()
         for (document in documents) {
@@ -39,6 +44,7 @@ class SkatersListRepository {
             var name    = document.data["name"].toString()
             var sex     = document.data["sex"].toString()
             val ssrId   = document.data["ssrId"]?.toString()?.toInt()
+            listAll.add(Skater(id, name, sex, ssrId))
             if (sex == "f") {
                 Log.i("ADD F", "$name")
                 listFemale.add(Skater(id, name, sex, ssrId))
@@ -48,6 +54,7 @@ class SkatersListRepository {
                 listMale.add(Skater(id, name, sex, ssrId))
             }
         }
+        _allSkatersList.value = SkatersList(listAll)
         _maleSkatersList.value = SkatersList(listMale)
         _femaleSkatersList.value = SkatersList(listFemale)
     }

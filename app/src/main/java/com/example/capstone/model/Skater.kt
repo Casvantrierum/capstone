@@ -5,4 +5,6 @@ data class Skater (
         val name: String,
         val sex: String,
         val ssrId: Int?
-)
+) {
+        override fun toString(): String = name
+}

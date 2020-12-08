@@ -9,7 +9,11 @@
         android:id="@+id/navigation_winners"
         android:name="com.example.capstone.ui.WinnersFragment"
         android:label="@string/title_winners"
-        tools:layout="@layout/fragment_winners" />
+        tools:layout="@layout/fragment_winners" >
+        <action
+            android:id="@+id/action_navigation_winners_to_skaterFragment"
+            app:destination="@id/skaterFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_standing"
@@ -19,6 +23,9 @@
         <action
             android:id="@+id/action_navigation_standing_to_skaterFragment"
             app:destination="@id/skaterFragment" />
+        <action
+            android:id="@+id/action_navigation_standing_to_addAttemptFragment"
+            app:destination="@id/addAttemptFragment" />
     </fragment>
 
     <fragment
@@ -31,4 +38,9 @@
         android:name="com.example.capstone.ui.SkaterFragment"
         android:label="fragment_skater"
         tools:layout="@layout/fragment_skater" />
+    <fragment
+        android:id="@+id/addAttemptFragment"
+        android:name="com.example.capstone.ui.AddAttemptFragment"
+        android:label="fragment_add_attempt"
+        tools:layout="@layout/fragment_add_attempt" />
 </navigation>

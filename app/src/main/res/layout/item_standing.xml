@@ -40,6 +40,7 @@
                 android:layout_marginTop="8dp"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@+id/tvRank"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="8dp"
-                android:text="On 29-11-20??"
                 android:textAlignment="textEnd"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvRank"
                 app:layout_constraintTop_toBottomOf="@+id/tvName"

@@ -14,6 +14,7 @@ class SkatersListViewModel(application: Application) : AndroidViewModel(applicat
     private val TAG = "FIRESTORE"
     private val skatersListRepository: SkatersListRepository = SkatersListRepository()
 
+    val allSkatersList: LiveData<SkatersList> = skatersListRepository.allSkatersList
     val maleSkatersList: LiveData<SkatersList> = skatersListRepository.maleSkatersList
     val femaleSkatersList: LiveData<SkatersList> = skatersListRepository.femaleSkatersList
 

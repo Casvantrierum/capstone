@@ -59,6 +59,11 @@ class StandingFragment : Fragment() {
         rvStanding.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         rvStanding.adapter = standingAdapter
 
+
+        fab.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_standing_to_addAttemptFragment)
+        }
+
         rgSex.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton = view.findViewById(checkedId)
             attemptsListViewModel.getAttemptListFiltered(skatersList)

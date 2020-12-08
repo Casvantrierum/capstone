@@ -4,17 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundTint="#FFFFFF"
     tools:context=".ui.StandingFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStanding"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgSex" />
+    <ImageButton
+        android:id="@+id/ibUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:src="@android:drawable/arrow_up_float"
+        android:tint="@color/colorAccent"
+        app:layout_constraintStart_toEndOf="@+id/tvSeason"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:src="@android:drawable/arrow_down_float"
+        android:tint="@color/colorAccent"
+        app:layout_constraintEnd_toStartOf="@+id/tvSeason"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/rgSex"
@@ -54,27 +67,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/ibUp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStanding"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgSex" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:layout_marginTop="16dp"
-        android:src="@android:drawable/arrow_up_float"
-        android:tint="@color/colorAccent"
-        app:layout_constraintStart_toEndOf="@+id/tvSeason"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/ibDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#FFFFFF"
-        android:src="@android:drawable/arrow_down_float"
-        android:tint="@color/colorAccent"
-        app:layout_constraintEnd_toStartOf="@+id/tvSeason"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toBottomOf="@id/rvStanding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
