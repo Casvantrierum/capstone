@@ -62,19 +62,25 @@ class SkatersListRepository {
     suspend fun getSkatersList() {
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
-            withTimeout(20_000) {
-//                skatersFemaleCollection
-//                        .get()
-//                        .addOnSuccessListener { documents ->
-//                            listFemale.addAll(docsToSkatersList(documents))
-//                        }
-//                        .await()
-//                _femaleSkatersList.value = SkatersList(listFemale)
+            withTimeout(5_000) {
                 skatersCollection
                         .get()
                         .addOnSuccessListener { documents ->
                             splitSkatersList(documents)
                         }
+                        .await()
+            }
+        }  catch (e : Exception) {
+            throw SkatersListRetrievalError("Retrieval-firebase-task was unsuccessful")
+        }
+    }
+
+    suspend fun addSkater(skater: Skater){
+        try {
+            //firestore has support for coroutines via the extra dependency we've added :)
+            withTimeout(5_000) {
+                skatersCollection
+                        .document(skater.id.toString()).set(skater)
                         .await()
             }
         }  catch (e : Exception) {

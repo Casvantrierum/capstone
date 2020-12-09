@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RadioButton
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,8 +27,8 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
     private var skatersList = arrayListOf<Skater>()
-    private val emptySkater = Skater(0, "New skater", "m", null)
-    private lateinit var selectedSkater: Skater
+    private val emptySkater = Skater(0, "New skater", "m", null)//TODO hc
+    private  var selectedSkater = emptySkater
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
@@ -91,8 +93,25 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         }, year, month, day)
 
-        btnPickDate.setOnClickListener { dpd.show() }
+        btnAdd.setOnClickListener {
+            if (selectedSkater.id == 0){
+                val id = rgSex.checkedRadioButtonId
+                var sex = "f"
+                if (id == R.id.rbMale){//TODO HC
+                    sex = "m"
+                }
 
+                skatersListViewModel.addSkater(Skater(
+                        etSkitsId.text.toString().toInt(),
+                        etName.text.toString(),
+                        sex,
+                        etSkitsId.text.toString().toInt(),
+                ))
+            }
+        }
+
+        //set current Date in the date field
+        btnPickDate.setOnClickListener { dpd.show() }
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")

@@ -17,4 +17,8 @@
     <string name="input_name">Name</string>
     <string name="skater_info">Skater info</string>
     <string name="input_skits_id">SKITS ID</string>
+    <string name="input_time">Time</string>
+    <string name="input_weather">weather</string>
+    <string name="attempt_info">Attempt info</string>
+    <string name="add">Add</string>
 </resources>

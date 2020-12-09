@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.capstone.model.Skater
 import com.example.capstone.model.SkatersList
 import com.example.capstone.repository.SkatersListRepository
 import kotlinx.coroutines.launch
@@ -30,6 +31,19 @@ class SkatersListViewModel(application: Application) : AndroidViewModel(applicat
                 skatersListRepository.getSkatersList()
             } catch (ex: SkatersListRepository.SkatersListRetrievalError) {
                 val errorMsg = "Something went wrong while retrieving skaters list"
+                Log.e(TAG, ex.message ?: errorMsg)
+                _errorText.value = errorMsg
+            }
+        }
+    }
+
+    fun addSkater(skater: Skater) {
+        viewModelScope.launch {
+            try {
+                skatersListRepository.addSkater(skater)
+                getSkatersList()
+            } catch (ex: SkatersListRepository.SkatersListRetrievalError) {
+                val errorMsg = "Something went wrong while adding a skater"
                 Log.e(TAG, ex.message ?: errorMsg)
                 _errorText.value = errorMsg
             }
