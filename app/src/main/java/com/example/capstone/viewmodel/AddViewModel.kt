@@ -51,7 +51,6 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                 var firebaseTimeStamp = com.google.firebase.Timestamp(seconds, 0)
 
                 attemptsListRepository.addAttempt(Attempt(
-                        "0",
                         skitsID,
                         0,
                         2020,

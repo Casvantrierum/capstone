@@ -32,7 +32,6 @@ class AttemptsListRepository {
     private fun documentsToAttemptsList(documents: QuerySnapshot): ArrayList<Attempt> {
         val list = arrayListOf<Attempt>()
         for (document in documents) {
-            val id          = document.id
             val skaterId    = document.data["skaterId"].toString().toInt()
             val clockedBy   = document.data["clockedBy"].toString().toInt()
             val season      = document.data["season"].toString().toInt()
@@ -41,7 +40,7 @@ class AttemptsListRepository {
 
             val dateInput = document.data["date"] as com.google.firebase.Timestamp
 
-            list.add(Attempt(id, skaterId, clockedBy,season, time, weather, dateInput))
+            list.add(Attempt(skaterId, clockedBy,season, time, weather, dateInput))
         }
         return list
     }
