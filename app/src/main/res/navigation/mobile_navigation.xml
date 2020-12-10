@@ -26,21 +26,42 @@
         <action
             android:id="@+id/action_navigation_standing_to_addAttemptFragment"
             app:destination="@id/addAttemptFragment" />
+        <action
+            android:id="@+id/action_navigation_standing_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_navigation_standing_to_wedcieMemberFragment"
+            app:destination="@id/wedcieMemberFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_information"
         android:name="com.example.capstone.ui.InformationFragment"
         android:label="@string/title_info"
-        tools:layout="@layout/fragment_information" />
+        tools:layout="@layout/fragment_information" >
+    </fragment>
     <fragment
         android:id="@+id/skaterFragment"
         android:name="com.example.capstone.ui.SkaterFragment"
-        android:label="fragment_skater"
+        android:label="@string/title_skater"
         tools:layout="@layout/fragment_skater" />
     <fragment
         android:id="@+id/addAttemptFragment"
         android:name="com.example.capstone.ui.AddAttemptFragment"
-        android:label="fragment_add_attempt"
-        tools:layout="@layout/fragment_add_attempt" />
+        android:label="@string/title_add"
+        tools:layout="@layout/fragment_add_attempt" >
+        <action
+            android:id="@+id/action_addAttemptFragment_to_navigation_standing"
+            app:destination="@id/navigation_standing" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.capstone.ui.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/wedcieMemberFragment"
+        android:name="com.example.capstone.ui.WedcieMemberFragment"
+        android:label="@string/title_wedciemember"
+        tools:layout="@layout/fragment_wedcie_member" />
 </navigation>

@@ -1,6 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-</LinearLayout>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.capstone.MainActivity">
+    <item
+        android:id="@+id/action_login"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:title="itemDelete"
+        android:visible="true"
+        app:showAsAction="always"
+        android:iconTint="@color/browser_actions_bg_grey"
+        app:iconTint="@color/browser_actions_bg_grey" />
+</menu>

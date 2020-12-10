@@ -14,9 +14,9 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         android:src="@android:drawable/arrow_up_float"
-        android:tint="@color/colorAccent"
         app:layout_constraintStart_toEndOf="@+id/tvSeason"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorAccent" />
 
     <ImageButton
         android:id="@+id/ibDown"
@@ -25,7 +25,7 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         android:src="@android:drawable/arrow_down_float"
-        android:tint="@color/colorAccent"
+        app:tint="@color/colorAccent"
         app:layout_constraintEnd_toStartOf="@+id/tvSeason"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,10 +84,11 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="48dp"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="@id/rvStanding"
         app:layout_constraintEnd_toEndOf="parent"
-        app:backgroundTint="@color/colorAccent"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="@color/white"/>
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

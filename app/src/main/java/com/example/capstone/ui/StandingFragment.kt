@@ -2,10 +2,9 @@ package com.example.capstone.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.view.*
+import android.widget.ImageButton
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -19,6 +18,8 @@ import com.example.capstone.model.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
 import com.example.capstone.viewmodel.SkaterViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_standing.*
 
 
@@ -39,18 +40,40 @@ class StandingFragment : Fragment() {
     private var currentSeason: Int = 2020 //TODO get with date
     private var sex: String = "m"
 
+    private var user: FirebaseUser? = null
+
     private lateinit var standingAdapter: StandingAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_standing, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            fab.show()
+            // Name, email address, and profile photo Url
+            //val name = user.displayName
+            val email = user!!.email
+            //val photoUrl: Uri? = user.photoUrl
+
+            // Check if user's email is verified
+            //val emailVerified = user.isEmailVerified
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            val uid = user!!.uid
+            Log.i("JA", "logedin as: $uid - $email")
+        }
+        else fab.hide()
 
         attemptsListViewModel.getAttemptsList(season)
         tvSeason.text = "Season $season-${season+1}"
@@ -119,7 +142,7 @@ class StandingFragment : Fragment() {
             maleSkatersList.clear()
             maleSkatersList.addAll(it.skatersList)
 
-            if (sex == "m"){
+            if (sex == "m") {
                 skatersList.clear()
                 skatersList.addAll(maleSkatersList)
             }
@@ -133,7 +156,7 @@ class StandingFragment : Fragment() {
 
             attemptsListViewModel.getAttemptListFiltered(skatersList)
 
-            if (sex == "f"){
+            if (sex == "f") {
                 skatersList.clear()
                 skatersList.addAll(femaleSkatersList)
             }
@@ -147,5 +170,27 @@ class StandingFragment : Fragment() {
         Log.i("CLICK", "${skater.name}")
         skaterViewModel.setSkater(skater)
         findNavController().navigate(R.id.action_navigation_standing_to_skaterFragment)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_login -> {
+            findNavController().navigate(R.id.action_navigation_standing_to_loginFragment)
+            true
+        }
+        R.id.action_logout -> {
+            findNavController().navigate(R.id.action_navigation_standing_to_wedcieMemberFragment)
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        if (user!= null) inflater.inflate(R.menu.topbar_loged_in, menu)
+        else inflater.inflate(R.menu.topbar_loged_out, menu)
     }
 }

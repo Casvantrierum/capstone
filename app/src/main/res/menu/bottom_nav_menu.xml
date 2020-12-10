@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/navigation_winners"
         android:icon="@drawable/ic_winners"
         android:title="@string/title_winners" />
-
     <item
         android:id="@+id/navigation_standing"
         android:icon="@drawable/ic_list"
         android:title="@string/title_standing" />
-
     <item
         android:id="@+id/navigation_information"
         android:icon="@drawable/ic_info"
         android:title="@string/title_info" />
-
 </menu>

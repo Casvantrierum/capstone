@@ -24,4 +24,15 @@
     <string name="input_lastname">Last name</string>
     <string name="input_firstname">Firstname</string>
     <string name="input_day">Day</string>
+    <string name="fragment_skater">Skater</string>
+    <string name="fragment_add">Add attempt</string>
+    <string name="title_add">Add</string>
+    <string name="title_skater">Skater</string>
+    <string name="login">Login</string>
+    <string name="input_username">Username</string>
+    <string name="input_password">password</string>
+    <string name="logout">logout</string>
+    <string name="login_info">This login is only for members of the wedcie.</string>
+    <string name="title_wedciemember">Wedcie members</string>
+    <string name="title_login">Login</string>
 </resources>

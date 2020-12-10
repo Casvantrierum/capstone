@@ -15,11 +15,16 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.capstone.R
 import com.example.capstone.model.Skater
 import com.example.capstone.viewmodel.AddViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import kotlinx.android.synthetic.main.fragment_add_attempt.*
+import kotlinx.android.synthetic.main.fragment_add_attempt.rbFemale
+import kotlinx.android.synthetic.main.fragment_add_attempt.rbMale
+import kotlinx.android.synthetic.main.fragment_add_attempt.rgSex
+import kotlinx.android.synthetic.main.fragment_standing.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -127,6 +132,9 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
                     etDateDay.text.toString(),
                     etDateMonth.text.toString(),
                     etDateYear.text.toString())
+
+            findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
+
         }
 
         btnPickDate.setOnClickListener { dpd.show() }
