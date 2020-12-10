@@ -5,20 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.capstone.model.Attempt
 import com.example.capstone.model.AttemptsList
-import com.google.common.collect.Lists
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
 import java.sql.Date
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 class AttemptsListRepository {
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private var attemptsCollection =
-        firestore.collection("Attempts").orderBy("time")
+        firestore.collection("Attempts")
 
     private val _attemptsList: MutableLiveData<AttemptsList> = MutableLiveData()
 
@@ -31,10 +29,10 @@ class AttemptsListRepository {
     val createSuccess: LiveData<Boolean>
         get() = _createSuccess
 
-    private fun documentsToSkatersList(documents: QuerySnapshot): ArrayList<Attempt> {
+    private fun documentsToAttemptsList(documents: QuerySnapshot): ArrayList<Attempt> {
         val list = arrayListOf<Attempt>()
         for (document in documents) {
-            val id          = document.id.toInt()
+            val id          = document.id
             val skaterId    = document.data["skaterId"].toString().toInt()
             val clockedBy   = document.data["clockedBy"].toString().toInt()
             val season      = document.data["season"].toString().toInt()
@@ -42,13 +40,8 @@ class AttemptsListRepository {
             val weather     = document.data["weather"].toString()
 
             val dateInput = document.data["date"] as com.google.firebase.Timestamp
-            val milliseconds = dateInput.seconds * 1000 + dateInput.nanoseconds / 1000000
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
-            val netDate = Date(milliseconds)
-            val date = sdf.format(netDate).toString()
 
-            list.add(Attempt(id, skaterId, clockedBy,season, time, weather, date))
-            Log.i("ADD", "$skaterId : $date")
+            list.add(Attempt(id, skaterId, clockedBy,season, time, weather, dateInput))
         }
         return list
     }
@@ -59,9 +52,10 @@ class AttemptsListRepository {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
                 attemptsCollection
+                    .orderBy("time")
                     .get()
                     .addOnSuccessListener { documents ->
-                        list.addAll(documentsToSkatersList(documents))
+                        list.addAll(documentsToAttemptsList(documents))
                     }
                     .await()
                 _attemptsList.value = AttemptsList(list);
@@ -72,15 +66,16 @@ class AttemptsListRepository {
     }
 
     suspend fun getAttemptsList(season: Int) {
-        var list = arrayListOf<Attempt>()
+        val list = arrayListOf<Attempt>()
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
                 attemptsCollection
+                        .orderBy("time")
                         .whereEqualTo("season", season)
                         .get()
                         .addOnSuccessListener { documents ->
-                            list.addAll(documentsToSkatersList(documents))
+                            list.addAll(documentsToAttemptsList(documents))
                         }
                         .await()
                 _attemptsList.value = AttemptsList(list);
@@ -91,21 +86,35 @@ class AttemptsListRepository {
     }
 
     suspend fun getAttemptsListSkater(skaterId: Int) {
-        var list = arrayListOf<Attempt>()
+        val list = arrayListOf<Attempt>()
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
                 attemptsCollection
+                    .orderBy("time")
                     .whereEqualTo("skaterId", skaterId)
                     .get()
                     .addOnSuccessListener { documents ->
-                        list.addAll(documentsToSkatersList(documents))
+                        list.addAll(documentsToAttemptsList(documents))
                     }
                     .await()
                 _attemptsList.value = AttemptsList(list);
             }
         }  catch (e : Exception) {
             throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")
+        }
+    }
+
+    suspend fun addAttempt(attempt: Attempt){
+        try {
+            //firestore has support for coroutines via the extra dependency we've added :)
+            withTimeout(5_000) {
+                attemptsCollection
+                        .document().set(attempt)
+                        .await()
+            }
+        }  catch (e : Exception) {
+            throw AttemptRetrievalError("Adding-firebase-task was unsuccessful")
         }
     }
 

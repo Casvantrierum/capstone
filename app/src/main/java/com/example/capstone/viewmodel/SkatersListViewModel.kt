@@ -36,17 +36,4 @@ class SkatersListViewModel(application: Application) : AndroidViewModel(applicat
             }
         }
     }
-
-    fun addSkater(skater: Skater) {
-        viewModelScope.launch {
-            try {
-                skatersListRepository.addSkater(skater)
-                getSkatersList()
-            } catch (ex: SkatersListRepository.SkatersListRetrievalError) {
-                val errorMsg = "Something went wrong while adding a skater"
-                Log.e(TAG, ex.message ?: errorMsg)
-                _errorText.value = errorMsg
-            }
-        }
-    }
 }

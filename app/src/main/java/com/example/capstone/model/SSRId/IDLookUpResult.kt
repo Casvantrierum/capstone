@@ -1,4 +1,8 @@
 package com.example.capstone.model.SSRId
 
-class IDLookUpResult {
-}
+import com.google.gson.annotations.SerializedName
+
+data class IDLookUpResult (
+    @SerializedName("skaters")
+    val skaters : List<Skaters>
+)

@@ -46,11 +46,9 @@ class SkatersListRepository {
             val ssrId   = document.data["ssrId"]?.toString()?.toInt()
             listAll.add(Skater(id, name, sex, ssrId))
             if (sex == "f") {
-                Log.i("ADD F", "$name")
                 listFemale.add(Skater(id, name, sex, ssrId))
             }
             else {
-                Log.i("ADD M", "$name")
                 listMale.add(Skater(id, name, sex, ssrId))
             }
         }
@@ -84,7 +82,7 @@ class SkatersListRepository {
                         .await()
             }
         }  catch (e : Exception) {
-            throw SkatersListRetrievalError("Retrieval-firebase-task was unsuccessful")
+            throw SkatersListRetrievalError("Adding-firebase-task was unsuccessful")
         }
     }
 

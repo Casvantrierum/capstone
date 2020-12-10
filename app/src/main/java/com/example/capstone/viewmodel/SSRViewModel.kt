@@ -15,7 +15,7 @@ class SSRViewModel(application: Application) : AndroidViewModel(application) {
 
     private val ssrRepository: SSRRepository = SSRRepository()
 
-    val results: LiveData<SSRResult> = ssrRepository.result
+    val results: LiveData<SSRResult> = ssrRepository.resultPersonalRecord
 
     private val _errorText: MutableLiveData<String> = MutableLiveData()
     val errorText: LiveData<String>

@@ -9,6 +9,8 @@ import com.example.capstone.model.Attempt
 import com.example.capstone.R
 import com.example.capstone.model.Skater
 import kotlinx.android.synthetic.main.item_standing.view.*
+import java.sql.Date
+import java.text.SimpleDateFormat
 
 class StandingAdapter (private val attemptsList: List<Attempt>, private val skatersList: List<Skater>, private val onClick: (Skater) -> Unit) :
     RecyclerView.Adapter<StandingAdapter.ViewHolder>() {
@@ -35,10 +37,17 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun databind(attempt: Attempt, skater: Skater, position: Int) {
             val ranking = position+1
+
+            val dateInput = attempt.date
+            val milliseconds = dateInput.seconds * 1000 + dateInput.nanoseconds / 1000000
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val netDate = Date(milliseconds)
+            val date = sdf.format(netDate).toString()
+
             itemView.tvRank.text = "$ranking."
             itemView.tvName.text = skater.name
             itemView.tvDistance.text = attempt.time
-            itemView.tvTime.text = attempt.date
+            itemView.tvTime.text = date
         }
 
         init {

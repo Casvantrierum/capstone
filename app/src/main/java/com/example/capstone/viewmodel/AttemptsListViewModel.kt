@@ -41,7 +41,6 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
                     Log.i("JA", "naar getAttemptsListAllSeasons want season = $season")
                     attemptsListRepository.getAttemptsListAllSeasons()
                 }
-
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
                 val errorMsg = "Something went wrong while retrieving attempt"
                 Log.e(TAG, ex.message ?: errorMsg)

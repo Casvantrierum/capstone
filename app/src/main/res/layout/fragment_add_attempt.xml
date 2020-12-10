@@ -23,7 +23,6 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -31,32 +30,51 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTitleSkaterInfo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilName"
+        android:id="@+id/tilFirstname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSkater">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSkater"
+        android:hint="@string/input_firstname" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etName"
+            android:id="@+id/etFirstname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="8dp"
-            android:text="@string/input_name" />
+            android:background="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilLastname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilFirstname"
+        android:hint="@string/input_lastname" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <RadioGroup
         android:id="@+id/rgSex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilName">
+        app:layout_constraintTop_toBottomOf="@+id/tilLastname">
 
         <RadioButton
             android:id="@+id/rbMale"
@@ -78,18 +96,18 @@
         android:id="@+id/tilSkitsId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgSex">
+        app:layout_constraintTop_toBottomOf="@+id/rgSex"
+        android:hint="@string/input_skits_id">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etSkitsId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:inputType="number"
-            android:padding="8dp"
-            android:text="@string/input_skits_id" />
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -102,37 +120,75 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilSkitsId"
-        android:layout_marginTop="64dp"/>
+        android:layout_marginTop="32dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilDate"
-        android:layout_width="match_parent"
+        android:id="@+id/tilDateDay"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitleAttemptInfo">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etDate"
+            android:id="@+id/etDateDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:enabled="false"
-            android:inputType="date"
-            android:padding="8dp" />
+            android:inputType="date"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDateMonth"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintStart_toEndOf="@id/tilDateDay"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleAttemptInfo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDateMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:inputType="date"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDateYear"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintStart_toEndOf="@id/tilDateMonth"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleAttemptInfo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDateYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:inputType="date"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnPickDate"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_below="@+id/tvDate"
         android:layout_centerInParent="true"
         android:text="Pick Date"
-        app:layout_constraintBottom_toBottomOf="@+id/tilDate"
-        app:layout_constraintEnd_toEndOf="@+id/tilDate"
-        app:layout_constraintTop_toTopOf="@+id/tilDate" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tilDateDay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tilDateYear"
+        app:layout_constraintTop_toTopOf="@+id/tilDateDay" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilTime"
@@ -140,16 +196,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilDate">
+        app:layout_constraintTop_toBottomOf="@+id/tilDateDay"
+        android:hint="@string/input_time">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:inputType="number"
-            android:padding="8dp"
-            android:text="@string/input_time" />
+            android:inputType="numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -159,15 +214,14 @@
         android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tilTime"
-        app:layout_constraintTop_toBottomOf="@+id/tilDate">
+        app:layout_constraintTop_toBottomOf="@+id/tilDateDay"
+        android:hint="@string/input_weather">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etWeather"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="8dp"
-            android:text="@string/input_weather" />
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

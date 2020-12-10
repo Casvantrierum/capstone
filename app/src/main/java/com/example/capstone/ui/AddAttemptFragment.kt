@@ -14,8 +14,10 @@ import android.widget.RadioButton
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.capstone.R
 import com.example.capstone.model.Skater
+import com.example.capstone.viewmodel.AddViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import kotlinx.android.synthetic.main.fragment_add_attempt.*
 import java.time.LocalDateTime
@@ -26,30 +28,33 @@ import java.util.*
 class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
+    private val addViewModel: AddViewModel by viewModels()
     private var skatersList = arrayListOf<Skater>()
     private val emptySkater = Skater(0, "New skater", "m", null)//TODO hc
     private  var selectedSkater = emptySkater
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
-        val selectedSkater = parent.selectedItem as Skater
+        selectedSkater = parent.selectedItem as Skater
         if (selectedSkater.id != 0){
-            etName.setText(selectedSkater.name)
+            etFirstname.setText(selectedSkater.name)
             etSkitsId.setText(selectedSkater.id.toString())
 
             if (selectedSkater.sex == "f") rbFemale.isChecked //TODO HC?
             else rbMale.isChecked
 
-            etName.isEnabled = false;
+            etFirstname.isEnabled = false;
+            etLastname.isEnabled = false;
             rbMale.isEnabled = false;
             rbFemale.isEnabled = false;
             etSkitsId.isEnabled = false;
         }
         else {
-            etName.setText("Name")//TODO hc
+            etFirstname.setText("Name")//TODO hc
             etSkitsId.setText("SKITS ID")//TODO hc
 
-            etName.isEnabled = true;
+            etFirstname.isEnabled = true;
+            etLastname.isEnabled = true;
             rbMale.isEnabled = true;
             rbFemale.isEnabled = true;
             etSkitsId.isEnabled = true;
@@ -87,36 +92,44 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
+        //set current Date in the date field
+        etDateYear.setText(year.toString())
+        etDateMonth.setText((month+ 1).toString())//months start at 0
+        etDateDay.setText(day.toString())
+
         val dpd = DatePickerDialog(requireActivity(), { _, year, monthOfYear, dayOfMonth ->
             // Display Selected date in textbox
-            etDate.setText("$dayOfMonth-$monthOfYear-$year")
-
+            etDateDay.setText(dayOfMonth.toString())
+            etDateMonth.setText((monthOfYear+ 1).toString())
+            etDateYear.setText(year.toString())
         }, year, month, day)
 
         btnAdd.setOnClickListener {
+            var sex = "f"
             if (selectedSkater.id == 0){
                 val id = rgSex.checkedRadioButtonId
-                var sex = "f"
                 if (id == R.id.rbMale){//TODO HC
                     sex = "m"
                 }
-
-                skatersListViewModel.addSkater(Skater(
-                        etSkitsId.text.toString().toInt(),
-                        etName.text.toString(),
-                        sex,
-                        etSkitsId.text.toString().toInt(),
-                ))
             }
+            else sex = selectedSkater.sex
+
+            Log.i("PROCEED", "with selectedSkater: $selectedSkater")
+
+            addViewModel.addSkater(
+                    (selectedSkater.id == 0),
+                    etFirstname.text.toString(),
+                    etLastname.text.toString(),
+                    sex,
+                    etSkitsId.text.toString().toInt(),
+                    etTime.text.toString(),
+                    etWeather.text.toString(),
+                    etDateDay.text.toString(),
+                    etDateMonth.text.toString(),
+                    etDateYear.text.toString())
         }
 
-        //set current Date in the date field
         btnPickDate.setOnClickListener { dpd.show() }
-
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        val formatted = current.format(formatter)
-        etDate.setText(formatted)
 
 
         skatersListViewModel.allSkatersList.observe(viewLifecycleOwner, {

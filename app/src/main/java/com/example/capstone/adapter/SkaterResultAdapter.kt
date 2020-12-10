@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
 import com.example.capstone.model.Attempt
 import kotlinx.android.synthetic.main.item_result.view.*
+import java.sql.Date
+import java.text.SimpleDateFormat
 
 class SkaterResultAdapter (private val attemptsList: List<Attempt>) :
         RecyclerView.Adapter<SkaterResultAdapter.ViewHolder>() {
@@ -29,8 +31,14 @@ class SkaterResultAdapter (private val attemptsList: List<Attempt>) :
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun databind(attempt: Attempt, position: Int) {
+                val dateInput = attempt.date
+                val milliseconds = dateInput.seconds * 1000 + dateInput.nanoseconds / 1000000
+                val sdf = SimpleDateFormat("dd/MM/yyyy")
+                val netDate = Date(milliseconds)
+                val date = sdf.format(netDate).toString()
+
                 itemView.tvDistance.text = attempt.time
-                itemView.tvTime.text = attempt.date
+                itemView.tvTime.text = date
                 itemView.tvLocation.text = "Weather: ${attempt.weather}"
             }
         }
