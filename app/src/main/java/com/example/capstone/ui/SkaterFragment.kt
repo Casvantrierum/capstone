@@ -2,9 +2,11 @@ package com.example.capstone.ui
 
 
 import android.content.ComponentName
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,9 +57,9 @@ class SkaterFragment : Fragment() {
     private lateinit var personalRecordAdapter: PersonalRecordAdapter
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_skater, container, false)
     }
@@ -67,42 +69,36 @@ class SkaterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val date1: Long = LocalDate.parse("14-10-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
-        val date2: Long = LocalDate.parse("18-10-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
-        val date3: Long = LocalDate.parse("14-11-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+        val date1: Float = LocalDate.parse("14-10-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay(
+            ZoneId.systemDefault()
+            ).toEpochSecond().toFloat()/1000
+        val date2: Float = LocalDate.parse("18-10-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay(
+            ZoneId.systemDefault()
+            ).toEpochSecond().toFloat()/1000
+        val date3: Float = LocalDate.parse("14-11-2020", DateTimeFormatter.ofPattern("dd-MM-yyyy")).atStartOfDay(
+            ZoneId.systemDefault()
+            ).toEpochSecond().toFloat()/1000
 
 
-//        val aaChartModel : AAChartModel = AAChartModel()
-//            .chartType(AAChartType.Line)
-//            .title("title")
-//            .subtitle("subtitle")
-//            .backgroundColor("#FFFFFF")
-//            .dataLabelsEnabled(true)
-//            .series(arrayOf(
-//                    AASeriesElement()
-//                            .name("Tokyo")
-//                            .data(arrayOf(
-//                                    arrayOf(date1, 13.40),
-//                                    arrayOf(date2, 13.59),
-//                                    arrayOf(date3, 14.00)
-//                            ))
-//            ))
-//
-//
-//        //The chart view object calls the instance object of AAChartModel and draws the final graphic
-//        val aaChartView : AAChartView = aa_chart_view
-//        aaChartView.aa_drawChartWithChartModel(aaChartModel)
+
 
         resultAdapter = SkaterResultAdapter(attemptsList)
         rvResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         rvResults.adapter = resultAdapter
 
         personalRecordAdapter = PersonalRecordAdapter(personalRecords)
-        rvPersonalRecords.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        rvPersonalRecords.layoutManager = LinearLayoutManager(
+            activity,
+            RecyclerView.VERTICAL,
+            false
+        )
         rvPersonalRecords.adapter = personalRecordAdapter
 
         mCustomTabsServiceConnection = object : CustomTabsServiceConnection() {
-            override fun onCustomTabsServiceConnected(componentName: ComponentName, customTabsClient: CustomTabsClient) {
+            override fun onCustomTabsServiceConnected(
+                componentName: ComponentName,
+                customTabsClient: CustomTabsClient
+            ) {
                 //Pre-warming
                 mClient = customTabsClient
                 mClient?.warmup(0L)
@@ -113,8 +109,9 @@ class SkaterFragment : Fragment() {
                 mClient = null
             }
         }
-        activity?.let { CustomTabsClient.bindCustomTabsService(it, CUSTOM_TAB_PACKAGE_NAME,
-                mCustomTabsServiceConnection as CustomTabsServiceConnection
+        activity?.let { CustomTabsClient.bindCustomTabsService(
+            it, CUSTOM_TAB_PACKAGE_NAME,
+            mCustomTabsServiceConnection as CustomTabsServiceConnection
         ) }
 
         tvSkitsLink.setOnClickListener {
@@ -122,7 +119,14 @@ class SkaterFragment : Fragment() {
                 .setShowTitle(true)
                 .build()
 
-            context?.let { it1 -> customTabsIntent.launchUrl(it1, Uri.parse(getString(R.string.skits_site_member, skater.id))) }
+            context?.let { it1 -> customTabsIntent.launchUrl(
+                it1, Uri.parse(
+                    getString(
+                        R.string.skits_site_member,
+                        skater.id
+                    )
+                )
+            ) }
         }
 
         skaterViewModel.skater.observe(viewLifecycleOwner, {

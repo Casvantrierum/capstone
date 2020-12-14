@@ -1,16 +1,19 @@
 package com.example.capstone.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageButton
 import android.widget.RadioButton
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.capstone.MainActivity
 import com.example.capstone.R
 import com.example.capstone.adapter.StandingAdapter
 import com.example.capstone.model.Attempt
@@ -21,6 +24,7 @@ import com.example.capstone.viewmodel.SkatersListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_standing.*
+import java.time.LocalDateTime
 
 
 class StandingFragment : Fragment() {
@@ -36,13 +40,27 @@ class StandingFragment : Fragment() {
     private var maleSkatersList = arrayListOf<Skater>()
     private var femaleSkatersList = arrayListOf<Skater>()
 
-    private var season: Int = 2020
-    private var currentSeason: Int = 2020 //TODO get with date
-    private var sex: String = "m"
+    private var season: Int = 0
+    private var currentSeason: Int = 0
+    private var sex: String = "m" //todo hc
 
     private var user: FirebaseUser? = null
 
     private lateinit var standingAdapter: StandingAdapter
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //set current season
+        val current = LocalDateTime.now()
+        val month = current.monthValue.toString().toInt()
+        val year = current.year.toString().toInt()
+
+        if (month >= 6) currentSeason = year
+        else currentSeason = year -1
+        season = currentSeason
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,13 +93,13 @@ class StandingFragment : Fragment() {
         else fab.hide()
 
         if (season == currentSeason + 1){
-            tvSeason.text = "All time" //TODO hc
+            tvSeason.text = getString(R.string.all_time)
             attemptsListViewModel.getAttemptsList(null)
             ibUp.visibility = View.INVISIBLE;
         }
         else{
             attemptsListViewModel.getAttemptsList(season)
-            tvSeason.text = "Season $season-${season+1}"
+            tvSeason.text = context?.getString(R.string.standing_season, season, season+1)
             ibUp.visibility = View.VISIBLE;
         }
 
@@ -100,12 +118,12 @@ class StandingFragment : Fragment() {
             standingAdapter.notifyDataSetChanged()
 
             skatersList.clear()
-            if (radio.text == "Male"){//TODO HC
-                sex = "m"
+            if (radio.text == getString(R.string.male)){
+                sex = getString(R.string.male_short)
                 skatersList.addAll(maleSkatersList)
             }
             else {
-                sex = "f"
+                sex = getString(R.string.female_short)
                 skatersList.addAll(femaleSkatersList)
             }
             attemptsListViewModel.getAttemptListFiltered(skatersList)
@@ -116,18 +134,18 @@ class StandingFragment : Fragment() {
             if(season > currentSeason + 1) season--
             else if(season == currentSeason + 1){
                 attemptsListViewModel.getAttemptsList(null)
-                tvSeason.text = "All time" //TODO hc
+                tvSeason.text = getString(R.string.all_time)
                 ibUp.visibility = View.INVISIBLE;
             }
             else {
                 attemptsListViewModel.getAttemptsList(season)
-                tvSeason.text = "Season $season-${season + 1}" //TODO hc
+                tvSeason.text = getString(R.string.standing_season, season, season+1)
             }
         }
 
         view.findViewById<ImageButton>(R.id.ibDown).setOnClickListener {
             season--
-            tvSeason.text = "Season $season-${season+1}" //TODO hc
+            tvSeason.text = getString(R.string.standing_season, season, season+1)
             attemptsListViewModel.getAttemptsList(season)
             ibUp.visibility = View.VISIBLE;
         }
@@ -151,7 +169,7 @@ class StandingFragment : Fragment() {
             maleSkatersList.clear()
             maleSkatersList.addAll(it.skatersList)
 
-            if (sex == "m") {
+            if (sex == getString(R.string.male_short)) {
                 skatersList.clear()
                 skatersList.addAll(maleSkatersList)
             }
@@ -165,7 +183,7 @@ class StandingFragment : Fragment() {
 
             attemptsListViewModel.getAttemptListFiltered(skatersList)
 
-            if (sex == "f") {
+            if (sex == getString(R.string.female_short)) {
                 skatersList.clear()
                 skatersList.addAll(femaleSkatersList)
             }

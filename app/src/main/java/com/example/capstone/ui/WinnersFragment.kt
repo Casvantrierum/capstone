@@ -1,16 +1,19 @@
 package com.example.capstone.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.capstone.MainActivity
 import com.example.capstone.R
 import com.example.capstone.adapter.WinnersAdapter
 import com.example.capstone.model.Attempt
@@ -19,6 +22,7 @@ import com.example.capstone.viewmodel.AttemptsListViewModel
 import com.example.capstone.viewmodel.SkaterViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import kotlinx.android.synthetic.main.fragment_winners.*
+import java.time.LocalDateTime
 
 class WinnersFragment : Fragment() {
 
@@ -36,10 +40,22 @@ class WinnersFragment : Fragment() {
     private var femaleSkaterWinnersList = arrayListOf<Skater?>()
     private var femaleAttemptWinnersList = arrayListOf<Attempt?>()
 
+    private var lastCompleteSeason: Int = 0
 
     private lateinit var winnersAdapter: WinnersAdapter
 
-    private val currentSeason = 2020 //todo hc
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //set current season
+        val current = LocalDateTime.now()
+        val month = current.monthValue.toString().toInt()
+        val year = current.year.toString().toInt() -1 //-1 beacuse currrent season is ongoing
+
+        if (month >= 6) lastCompleteSeason = year
+        else lastCompleteSeason = year - 1
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -59,7 +75,7 @@ class WinnersFragment : Fragment() {
             maleAttemptWinnersList,
             femaleSkaterWinnersList,
             femaleAttemptWinnersList,
-            currentSeason,
+            lastCompleteSeason,
             ::onSkaterClick
         )
         rvWinners.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -102,7 +118,7 @@ class WinnersFragment : Fragment() {
         val femaleIds = arrayListOf<Int>()
         for (female in femaleSkatersList) femaleIds.add(female.id)
 
-        for (i in currentSeason downTo 1985 step 1) {
+        for (i in lastCompleteSeason downTo 1985 step 1) {
             val attemptMale = attemptsList.filter{ it.season == i && it.skaterId in maleIds}.minByOrNull {it.time}
             if (attemptMale != null){
                 val skaterMale = maleSkatersList.filter{it.id == attemptMale.skaterId}

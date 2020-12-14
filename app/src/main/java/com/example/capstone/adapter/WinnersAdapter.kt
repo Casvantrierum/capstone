@@ -2,6 +2,7 @@ package com.example.capstone.adapter
 
 import android.content.Context
 import android.provider.Settings.Global.getString
+import android.provider.Settings.System.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -48,9 +49,12 @@ class WinnersAdapter (
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun databind(skaterMale: Skater?, attemptMale: Attempt?, skaterFemale: Skater?, attemptFemale: Attempt?) {
 
-            val season = currentSeason-adapterPosition
+            val season = (currentSeason-adapterPosition)%100 //only last two digits of the season
+            val seasonFormatted1 = season.toString().padStart(2, '0').takeLast(2)
+            val seasonFormatted2 = (season+1).toString().padStart(2, '0').takeLast(2)
 
-            itemView.tvYear.text = "$season"
+
+            itemView.tvYear.text = "$seasonFormatted1/$seasonFormatted2"
 
             if (attemptMale != null){
                 itemView.tvMaleFirstname.text = "${skaterMale?.firstname}"
@@ -59,7 +63,7 @@ class WinnersAdapter (
             }
             else {
                 itemView.tvMaleFirstname.text = ""
-                itemView.tvMaleLastname.text = "No attempts"//todo hc
+                itemView.tvMaleLastname.text = context.getString(R.string.no_attempt)
                 itemView.tvMaleTime.text = ""
             }
 
@@ -70,7 +74,7 @@ class WinnersAdapter (
             }
             else {
                 itemView.tvFemaleFirstname.text = ""
-                itemView.tvFemaleLastname.text = "No attempts"//todo hc
+                itemView.tvFemaleLastname.text = context.getString(R.string.no_attempt)
                 itemView.tvFemaleTime.text = ""
             }
         }
