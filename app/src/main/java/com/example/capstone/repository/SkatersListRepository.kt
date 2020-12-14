@@ -40,16 +40,17 @@ class SkatersListRepository {
         val listMale = arrayListOf<Skater>()
         val listFemale = arrayListOf<Skater>()
         for (document in documents) {
-            val id      = document.id.toInt()
-            var name    = document.data["name"].toString()
-            var sex     = document.data["sex"].toString()
-            val ssrId   = document.data["ssrId"]?.toString()?.toInt()
-            listAll.add(Skater(id, name, sex, ssrId))
+            val id          = document.id.toInt()
+            var firstname    = document.data["firstname"].toString()
+            var lastname    = document.data["lastname"].toString()
+            var sex         = document.data["sex"].toString()
+            val ssrId       = document.data["ssrId"]?.toString()?.toInt()
+            listAll.add(Skater(id, firstname, lastname, sex, ssrId))
             if (sex == "f") {
-                listFemale.add(Skater(id, name, sex, ssrId))
+                listFemale.add(Skater(id, firstname, lastname, sex, ssrId))
             }
             else {
-                listMale.add(Skater(id, name, sex, ssrId))
+                listMale.add(Skater(id, firstname, lastname, sex, ssrId))
             }
         }
         _allSkatersList.value = SkatersList(listAll)

@@ -4,13 +4,12 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,9 +23,6 @@ import kotlinx.android.synthetic.main.fragment_add_attempt.*
 import kotlinx.android.synthetic.main.fragment_add_attempt.rbFemale
 import kotlinx.android.synthetic.main.fragment_add_attempt.rbMale
 import kotlinx.android.synthetic.main.fragment_add_attempt.rgSex
-import kotlinx.android.synthetic.main.fragment_standing.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -35,34 +31,37 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
     private val addViewModel: AddViewModel by viewModels()
     private var skatersList = arrayListOf<Skater>()
-    private val emptySkater = Skater(0, "New skater", "m", null)//TODO hc
+    private val emptySkater = Skater(0, "New skater", "", "m", null)//TODO hc
     private  var selectedSkater = emptySkater
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
         selectedSkater = parent.selectedItem as Skater
         if (selectedSkater.id != 0){
-            etFirstname.setText(selectedSkater.name)
+            etFirstname.setText(selectedSkater.firstname)
+            etLastname.setText(selectedSkater.lastname)
             etSkitsId.setText(selectedSkater.id.toString())
 
-            if (selectedSkater.sex == "f") rbFemale.isChecked //TODO HC?
+            if (selectedSkater.sex == getString(R.string.female_short)) rbFemale.isChecked //TODO HC?
             else rbMale.isChecked
 
-            etFirstname.isEnabled = false;
-            etLastname.isEnabled = false;
-            rbMale.isEnabled = false;
-            rbFemale.isEnabled = false;
-            etSkitsId.isEnabled = false;
+            etFirstname.isEnabled = false
+            etLastname.isEnabled = false
+            rbMale.isEnabled = false
+            rbFemale.isEnabled = false
+            etSkitsId.isEnabled = false
         }
         else {
-            etFirstname.setText("Name")//TODO hc
-            etSkitsId.setText("SKITS ID")//TODO hc
+            etFirstname.clearComposingText()
+            etFirstname.text = null
+            etLastname.text = null
+            etSkitsId.text= null
 
-            etFirstname.isEnabled = true;
-            etLastname.isEnabled = true;
-            rbMale.isEnabled = true;
-            rbFemale.isEnabled = true;
-            etSkitsId.isEnabled = true;
+            etFirstname.isEnabled = true
+            etLastname.isEnabled = true
+            rbMale.isEnabled = true
+            rbFemale.isEnabled = true
+            etSkitsId.isEnabled = true
         }
     }
 
@@ -102,39 +101,40 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         etDateMonth.setText((month+ 1).toString())//months start at 0
         etDateDay.setText(day.toString())
 
-        val dpd = DatePickerDialog(requireActivity(), { _, year, monthOfYear, dayOfMonth ->
+        val dpd = DatePickerDialog(requireActivity(), { _, yearSelected, monthOfYear, dayOfMonth ->
             // Display Selected date in textbox
             etDateDay.setText(dayOfMonth.toString())
             etDateMonth.setText((monthOfYear+ 1).toString())
-            etDateYear.setText(year.toString())
+            etDateYear.setText(yearSelected.toString())
         }, year, month, day)
 
         btnAdd.setOnClickListener {
-            var sex = "f"
-            if (selectedSkater.id == 0){
-                val id = rgSex.checkedRadioButtonId
-                if (id == R.id.rbMale){//TODO HC
-                    sex = "m"
+            if(checkInput()){
+                var sex = getString(R.string.female_short)
+                if (selectedSkater.id == 0){
+                    val id = rgSex.checkedRadioButtonId
+                    if (id == R.id.rbMale){
+                        sex = getString(R.string.male_short)
+                    }
                 }
+                else sex = selectedSkater.sex
+
+                //Log.i("PROCEED", "with selectedSkater: $selectedSkater")
+
+                addViewModel.addSkater(
+                        (selectedSkater.id == 0),
+                        etFirstname.text.toString(),
+                        etLastname.text.toString(),
+                        sex,
+                        etSkitsId.text.toString().toInt(),
+                        etTime.text.toString(),
+                        etWeather.text.toString(),
+                        etDateDay.text.toString(),
+                        etDateMonth.text.toString(),
+                        etDateYear.text.toString())
+
+                findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
             }
-            else sex = selectedSkater.sex
-
-            Log.i("PROCEED", "with selectedSkater: $selectedSkater")
-
-            addViewModel.addSkater(
-                    (selectedSkater.id == 0),
-                    etFirstname.text.toString(),
-                    etLastname.text.toString(),
-                    sex,
-                    etSkitsId.text.toString().toInt(),
-                    etTime.text.toString(),
-                    etWeather.text.toString(),
-                    etDateDay.text.toString(),
-                    etDateMonth.text.toString(),
-                    etDateYear.text.toString())
-
-            findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
-
         }
 
         btnPickDate.setOnClickListener { dpd.show() }
@@ -146,5 +146,42 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
             skatersList.addAll(it.skatersList)
             aa.notifyDataSetChanged()
         })
+    }
+
+    private fun checkInput(): Boolean{
+        var wrongElements = ""
+        if (selectedSkater.id == 0){
+            if (etFirstname.text.toString() == "") wrongElements += " ${getString(R.string.input_firstname)},"
+            if (etLastname.text.toString() == "") wrongElements += " ${getString(R.string.input_lastname)},"
+            if (etSkitsId.text.toString() == "" || etSkitsId.text.toString().toInt() <= 0)
+                wrongElements += " ${getString(R.string.input_skits_id)},"
+        }
+
+
+        val day = etDateDay.text.toString()
+        val month = etDateMonth.text.toString()
+        val year = etDateYear.text.toString()
+        if (day == "" || day.toInt() <= 0 || day.toInt() > 31)
+            wrongElements += " ${getString(R.string.input_day)},"
+        if (month == "" || month.toInt() <= 0 || month.toInt() > 12)
+            wrongElements += " ${getString(R.string.input_month)},"
+        if (year == "")
+            wrongElements += " ${getString(R.string.input_year)},"
+
+        val timeRegex = "[0-9]?[0-9].[0-5][0-9]".toRegex()
+        if (!etTime.text.toString().matches(timeRegex)) wrongElements += " ${getString(R.string.input_time)},"
+
+        return if (wrongElements == ""){
+            true
+        }
+        else {
+            wrongElements = wrongElements.substring(0, wrongElements.length -1) //strip last comma
+            Toast.makeText(
+                    requireActivity(),
+                    getString(R.string.incorrect_input, wrongElements),
+                    Toast.LENGTH_LONG
+            ).show()
+            false
+        }
     }
 }
