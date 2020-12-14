@@ -42,7 +42,7 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
             etLastname.setText(selectedSkater.lastname)
             etSkitsId.setText(selectedSkater.id.toString())
 
-            if (selectedSkater.sex == getString(R.string.female_short)) rbFemale.isChecked //TODO HC?
+            if (selectedSkater.sex == getString(R.string.female_short)) rbFemale.isChecked
             else rbMale.isChecked
 
             etFirstname.isEnabled = false

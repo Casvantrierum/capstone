@@ -47,4 +47,7 @@
     <string name="title_login">Login</string>
     <string name="incorrect_input">Please enter a correct input for: %s</string>
     <string name="no_attempt">No attempt</string>
+    <string name="all_time">All time</string>
+    <string name="standing_season">Season %d-%d</string>
+    <string name="skits_site_link">Click here for contact information via the SKITS site.</string>
 </resources>
