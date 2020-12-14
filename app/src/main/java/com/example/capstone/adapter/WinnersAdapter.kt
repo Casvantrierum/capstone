@@ -21,7 +21,8 @@ class WinnersAdapter (
     private val maleAttemptWinnersList: List<Attempt?>,
     private val femaleSkaterWinnersList: List<Skater?>,
     private val femaleAttemptWinnersList: List<Attempt?>,
-    private val currentSeason: Int) :
+    private val currentSeason: Int,
+    private val onClick: (Skater) -> Unit) :
     RecyclerView.Adapter<WinnersAdapter.ViewHolder>() {
 
     private lateinit var context: Context
@@ -47,39 +48,46 @@ class WinnersAdapter (
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun databind(skaterMale: Skater?, attemptMale: Attempt?, skaterFemale: Skater?, attemptFemale: Attempt?) {
 
-            val season = currentSeason-position
+            val season = currentSeason-adapterPosition
 
             itemView.tvYear.text = "$season"
 
             if (attemptMale != null){
                 itemView.tvMaleFirstname.text = "${skaterMale?.firstname}"
                 itemView.tvMaleLastname.text = "${skaterMale?.lastname}"
-                itemView.tvMaleTime.text = attemptMale?.time
+                itemView.tvMaleTime.text = attemptMale.time
             }
             else {
                 itemView.tvMaleFirstname.text = ""
-                itemView.tvMaleLastname.text = "No attempts done"//todo hc
+                itemView.tvMaleLastname.text = "No attempts"//todo hc
                 itemView.tvMaleTime.text = ""
             }
 
             if (attemptFemale != null){
                 itemView.tvFemaleFirstname.text = "${skaterFemale?.firstname}"
                 itemView.tvFemaleLastname.text = "${skaterFemale?.lastname}"
-                itemView.tvFemaleTime.text = attemptFemale?.time
+                itemView.tvFemaleTime.text = attemptFemale.time
             }
             else {
                 itemView.tvFemaleFirstname.text = ""
-                itemView.tvFemaleLastname.text = "No attempts done"//todo hc
+                itemView.tvFemaleLastname.text = "No attempts"//todo hc
                 itemView.tvFemaleTime.text = ""
             }
         }
 
-//        init {
-//            itemView.setOnClickListener {
-//                val skatersFound: Skater =
-//                    skatersList.single { s -> (s.id == attemptsList[adapterPosition].skaterId) }
-//                onClick(skatersFound)
-//            }
-//        }
+        init {
+            itemView.tvMaleFirstname.setOnClickListener {
+                maleSkaterWinnersList[adapterPosition]?.let { it1 -> onClick(it1) }
+            }
+            itemView.tvMaleLastname.setOnClickListener {
+                maleSkaterWinnersList[adapterPosition]?.let { it1 -> onClick(it1) }
+            }
+            itemView.tvFemaleFirstname.setOnClickListener {
+                femaleSkaterWinnersList[adapterPosition]?.let { it1 -> onClick(it1) }
+            }
+            itemView.tvFemaleLastname.setOnClickListener {
+                femaleSkaterWinnersList[adapterPosition]?.let { it1 -> onClick(it1) }
+            }
+        }
     }
 }

@@ -1,12 +1,14 @@
 package com.example.capstone.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
@@ -14,6 +16,7 @@ import com.example.capstone.adapter.WinnersAdapter
 import com.example.capstone.model.Attempt
 import com.example.capstone.model.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
+import com.example.capstone.viewmodel.SkaterViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import kotlinx.android.synthetic.main.fragment_winners.*
 
@@ -21,6 +24,7 @@ class WinnersFragment : Fragment() {
 
     private val attemptsListViewModel: AttemptsListViewModel by viewModels()
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
+    private val skaterViewModel: SkaterViewModel by activityViewModels()
 
     private var attemptsList = arrayListOf<Attempt>()
     private var skatersList = arrayListOf<Skater>()
@@ -42,46 +46,46 @@ class WinnersFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        attemptsListViewModel.getAttemptsList(null)
         return inflater.inflate(R.layout.fragment_winners, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        attemptsListViewModel.getAttemptsList(null)
 
         winnersAdapter = WinnersAdapter(
             maleSkaterWinnersList,
             maleAttemptWinnersList,
             femaleSkaterWinnersList,
             femaleAttemptWinnersList,
-            currentSeason
+            currentSeason,
+            ::onSkaterClick
         )
         rvWinners.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         rvWinners.adapter = winnersAdapter
 
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {
             attemptsList.clear()
-            attemptsList = it.attemptsList
-
+            attemptsList.addAll(it.attemptsList)
             formatData()
         })
 
         skatersListViewModel.allSkatersList.observe(viewLifecycleOwner, {
             skatersList.clear()
-            skatersList = it.skatersList
+            skatersList.addAll(it.skatersList)
 
             formatData()
         })
 
         skatersListViewModel.maleSkatersList.observe(viewLifecycleOwner, {
             maleSkatersList.clear()
-            maleSkatersList = it.skatersList
+            maleSkatersList.addAll(it.skatersList)
         })
 
         skatersListViewModel.femaleSkatersList.observe(viewLifecycleOwner, {
             femaleSkatersList.clear()
-            femaleSkatersList = it.skatersList
+            femaleSkatersList.addAll(it.skatersList)
         })
     }
 
@@ -115,6 +119,13 @@ class WinnersFragment : Fragment() {
             else femaleSkaterWinnersList.add(null)
             femaleAttemptWinnersList.add(attemptFemale)
         }
+
         winnersAdapter.notifyDataSetChanged()
+    }
+
+
+    private fun onSkaterClick(skater: Skater) {
+        skaterViewModel.setSkater(skater)
+        findNavController().navigate(R.id.action_navigation_winners_to_skaterFragment)
     }
 }

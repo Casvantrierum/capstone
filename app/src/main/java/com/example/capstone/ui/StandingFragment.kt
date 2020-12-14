@@ -173,7 +173,6 @@ class StandingFragment : Fragment() {
         })
     }
 
-
     private fun onSkaterClick(skater: Skater) {
         skaterViewModel.setSkater(skater)
         findNavController().navigate(R.id.action_navigation_standing_to_skaterFragment)
