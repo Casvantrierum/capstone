@@ -175,8 +175,6 @@ class StandingFragment : Fragment() {
 
 
     private fun onSkaterClick(skater: Skater) {
-        //Log.i("CLICK", "${attempt.time}")
-        Log.i("CLICK", "${skater.name}")
         skaterViewModel.setSkater(skater)
         findNavController().navigate(R.id.action_navigation_standing_to_skaterFragment)
     }

@@ -7,32 +7,43 @@
     <string name="info_trophy">Het competitieve element op een SKITS training: de Peter en Petra de Jong trofee.  Het gaat om 25 (mannen) of 18 (vrouwen) rondjes solo (dus niet stayeren) langs de binnenkant van de baan op tijd.  Start en finish bij 500 meter start. Er wordt stilstaand gestart. WedCie is aanwezig (indien gemeld of aangevraagd) om ronde te turfen en te klokken.</string>
     <string name="info_trophy_title">Wat is de Peter/Petra de Jong trofee</string>
     <string name="ThanksSpeedSkatingResults">This app makes use of the http://www.speedskatingresults.com public API. "</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="skits_site_member">https://www.skits.nl/mijn-vereniging/ledenlijst/%d</string>
     <string name="results">Results</string>
     <string name="prs">Personal records</string>
-    <string name="input_name">Name</string>
     <string name="skater_info">Skater info</string>
-    <string name="input_skits_id">SKITS ID</string>
-    <string name="input_time">Time</string>
-    <string name="input_weather">Weather</string>
     <string name="attempt_info">Attempt info</string>
     <string name="add">Add</string>
-    <string name="input_lastname">Last name</string>
+
+    <string name="input_name">Name</string>
+    <string name="input_lastname">Lastname</string>
     <string name="input_firstname">Firstname</string>
     <string name="input_day">Day</string>
+    <string name="input_month">Day</string>
+    <string name="input_year">Day</string>
+    <string name="input_username">Username</string>
+    <string name="input_password">password</string>
+
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
+    <string name="male_short">m</string>
+    <string name="female_short">f</string>
+
     <string name="fragment_skater">Skater</string>
     <string name="fragment_add">Add attempt</string>
     <string name="title_add">Add</string>
     <string name="title_skater">Skater</string>
+    <string name="input_skits_id">SKITS ID</string>
+    <string name="input_time">Time</string>
+    <string name="input_weather">Weather</string>
+
     <string name="login">Login</string>
-    <string name="input_username">Username</string>
-    <string name="input_password">password</string>
     <string name="logout">logout</string>
+
     <string name="login_info">This login is only for members of the wedcie.</string>
+
     <string name="title_wedciemember">Wedcie members</string>
     <string name="title_login">Login</string>
+    <string name="incorrect_input">Please enter a correct input for: %s</string>
 </resources>

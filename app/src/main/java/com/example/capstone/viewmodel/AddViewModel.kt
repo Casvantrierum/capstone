@@ -36,7 +36,7 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                     ssrRepository.getSSRId(firstname, lastname)
                     val ssrId = ssrRepository.resultId.value?.skaters?.get(0)?.id
                     skatersListRepository.addSkater(Skater(
-                            skitsID, "$firstname $lastname", sex, ssrId
+                            skitsID, firstname, lastname, sex, ssrId
                     ))
                     skatersListRepository.getSkatersList()
                 }

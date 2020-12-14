@@ -127,7 +127,7 @@ class SkaterFragment : Fragment() {
 
         skaterViewModel.skater.observe(viewLifecycleOwner, {
             skater = it
-            tvName.text = it.name
+            tvName.text = it.toString()
 
             attemptsListViewModel.getAttemptsListSkater(skater.id)
             ssrViewModel.getSSRPersonalRecord(skater)
