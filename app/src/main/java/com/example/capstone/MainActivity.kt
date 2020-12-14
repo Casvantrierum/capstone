@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //setSupportActionBar(findViewById(R.id.toolbar))
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
@@ -44,5 +46,13 @@ class MainActivity : AppCompatActivity() {
 
         val skatersListViewModel: SkatersListViewModel = ViewModelProvider(this).get(SkatersListViewModel::class.java)
         skatersListViewModel.getSkatersList()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            findNavController(R.id.nav_host_fragment).popBackStack()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

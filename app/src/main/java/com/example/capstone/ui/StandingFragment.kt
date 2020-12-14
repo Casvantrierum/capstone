@@ -71,12 +71,19 @@ class StandingFragment : Fragment() {
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
             val uid = user!!.uid
-            Log.i("JA", "logedin as: $uid - $email")
         }
         else fab.hide()
 
-        attemptsListViewModel.getAttemptsList(season)
-        tvSeason.text = "Season $season-${season+1}"
+        if (season == currentSeason + 1){
+            tvSeason.text = "All time" //TODO hc
+            attemptsListViewModel.getAttemptsList(null)
+            ibUp.visibility = View.INVISIBLE;
+        }
+        else{
+            attemptsListViewModel.getAttemptsList(season)
+            tvSeason.text = "Season $season-${season+1}"
+            ibUp.visibility = View.VISIBLE;
+        }
 
         standingAdapter = StandingAdapter(attemptsListFiltered, skatersList, ::onSkaterClick)
         rvStanding.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -106,21 +113,23 @@ class StandingFragment : Fragment() {
 
         view.findViewById<ImageButton>(R.id.ibUp).setOnClickListener {
             season++
-
             if(season > currentSeason + 1) season--
             else if(season == currentSeason + 1){
                 attemptsListViewModel.getAttemptsList(null)
                 tvSeason.text = "All time" //TODO hc
+                ibUp.visibility = View.INVISIBLE;
             }
             else {
                 attemptsListViewModel.getAttemptsList(season)
                 tvSeason.text = "Season $season-${season + 1}" //TODO hc
             }
         }
+
         view.findViewById<ImageButton>(R.id.ibDown).setOnClickListener {
             season--
             tvSeason.text = "Season $season-${season+1}" //TODO hc
             attemptsListViewModel.getAttemptsList(season)
+            ibUp.visibility = View.VISIBLE;
         }
 
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {
