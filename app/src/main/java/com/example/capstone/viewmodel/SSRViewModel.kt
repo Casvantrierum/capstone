@@ -25,12 +25,11 @@ class SSRViewModel(application: Application) : AndroidViewModel(application) {
         if (skater.ssrId != null){
             viewModelScope.launch {
                 try {
-                    //the MovieListRepository sets it's own livedata property
-                    //our own MovieList LiveData property points to te one in that repository
                     ssrRepository.getSSRPersonalRecord(skater.ssrId)
                 } catch (error: SSRRepository.SSRRefreshError) {
                     _errorText.value = error.message
                     Log.e("SSR error", error.cause.toString())
+                    Log.i("SSR error", error.cause.toString())
                 }
             }
         }

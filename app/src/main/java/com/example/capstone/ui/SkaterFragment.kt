@@ -3,6 +3,7 @@ package com.example.capstone.ui
 import android.content.ComponentName
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -117,8 +118,6 @@ class SkaterFragment : Fragment() {
             ) }
         }
 
-
-
         skatersListViewModel.maleSkatersList.observe(viewLifecycleOwner, {
             femaleSkatersList.clear()
             femaleSkatersList.addAll(it.skatersList)
@@ -160,6 +159,19 @@ class SkaterFragment : Fragment() {
             personalRecords.addAll(it.records)
             personalRecordAdapter.notifyDataSetChanged()
         }
+
+        ssrViewModel.results.observe(viewLifecycleOwner) {
+            personalRecords.clear()
+            personalRecords.addAll(it.records)
+            personalRecordAdapter.notifyDataSetChanged()
+        }
+
+        ssrViewModel.errorText.observe(viewLifecycleOwner) {
+            personalRecords.clear()
+            tvNoConnection.text = it
+            tvPRTitle.text = getString(R.string.empty_string)
+            personalRecordAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun updateChart() {
@@ -181,6 +193,7 @@ class SkaterFragment : Fragment() {
                 .legendEnabled(false)
                 .series(arrayOf(
                         AASeriesElement()
+                                .name(context?.getString(R.string.ranking))
                                 .data(rankingsArray.toArray())
                                 .color(String.format("#%06x", context?.getColor(R.color.colorAccent)?.and(0xffffff)))
                 ))

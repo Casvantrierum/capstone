@@ -54,4 +54,7 @@
     <string name="result_weather">Weather: %s</string>
     <string name="skater_ranking_y_axis" />
     <string name="title_winners_fragment">All previous winners of the trophee</string>
+    <string name="ranking">ranking</string>
+
+    <string name="empty_string" />
 </resources>
