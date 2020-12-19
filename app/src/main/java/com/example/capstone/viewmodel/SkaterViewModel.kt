@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.capstone.model.Skater
+import com.example.capstone.repository.AttemptsListRepository
+import kotlinx.coroutines.launch
 
 class SkaterViewModel (application: Application) : AndroidViewModel(application)  {
 
@@ -13,16 +16,7 @@ class SkaterViewModel (application: Application) : AndroidViewModel(application)
     val skater: LiveData<Skater>
         get() = _skater
 
-
     fun setSkater(selectedSkater: Skater) {
-        Log.i("IN","setSkater()")
         _skater.value = selectedSkater
-    }
-
-    fun getSSRResults() {
-        Log.i("IN","getSSRResults()")
-        if (skater.value?.ssrId != 0){
-            Log.i("SSR", "it has an ssr id")
-        }
     }
 }

@@ -22,6 +22,10 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
 
     private val ssrRepository: SSRRepository = SSRRepository()
 
+    private val _fetching: MutableLiveData<Boolean> = MutableLiveData()
+    val fetching: LiveData<Boolean>
+        get() = _fetching
+
     val createSuccess: LiveData<Boolean> = skatersListRepository.createSuccess
 
     private val _errorText: MutableLiveData<String> = MutableLiveData()
@@ -31,13 +35,16 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
     fun addSkater(new: Boolean, firstname: String, lastname: String, sex: String, skitsID: Int,
                   time: String, weather: String, day: String, month: String, year: String) {
         viewModelScope.launch {
+            _fetching.value = true
             try {
-                if(new){
+                if (new) {
                     ssrRepository.getSSRId(firstname, lastname)
                     val ssrId = ssrRepository.resultId.value?.skaters?.get(0)?.id
-                    skatersListRepository.addSkater(Skater(
+                    skatersListRepository.addSkater(
+                        Skater(
                             skitsID, firstname, lastname, sex, ssrId
-                    ))
+                        )
+                    )
                     skatersListRepository.getSkatersList()
                 }
 
@@ -45,25 +52,33 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
 
                 // the correct way to get today's date
                 val calendar = Calendar.getInstance()
-                calendar.set(year.toInt(), month.toInt() -1, day.toInt(), 0, 0);
-                val seconds: Long = calendar.timeInMillis/1000
+                calendar.set(year.toInt(), month.toInt() - 1, day.toInt(), 0, 0);
+                val seconds: Long = calendar.timeInMillis / 1000
+
+                var season: Int
+                if (month.toInt() >= 6) season = year.toInt()
+                else season = year.toInt() - 1
 
                 var firebaseTimeStamp = com.google.firebase.Timestamp(seconds, 0)
 
-                attemptsListRepository.addAttempt(Attempt(
+                attemptsListRepository.addAttempt(
+                    Attempt(
                         skitsID,
                         0,
-                        2020,
+                        season,
                         time,
                         weather,
                         firebaseTimeStamp
-                ))
+                    )
+                )
 
             } catch (ex: SkatersListRepository.SkatersListRetrievalError) {
                 val errorMsg = "Something went wrong while adding a skater"
                 Log.e(TAG, ex.message ?: errorMsg)
                 _errorText.value = errorMsg
             }
+
+            _fetching.value = false
         }
     }
 }

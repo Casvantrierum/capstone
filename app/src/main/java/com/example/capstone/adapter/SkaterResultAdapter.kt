@@ -39,7 +39,7 @@ class SkaterResultAdapter (private val attemptsList: List<Attempt>) :
 
                 itemView.tvDistance.text = attempt.time
                 itemView.tvTime.text = date
-                itemView.tvLocation.text = "Weather: ${attempt.weather}"
+                if(!attempt.weather.isEmpty()) itemView.tvLocation.text = context.getString(R.string.result_weather, attempt.weather)
             }
         }
 }

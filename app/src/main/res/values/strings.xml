@@ -50,4 +50,7 @@
     <string name="all_time">All time</string>
     <string name="standing_season">Season %d-%d</string>
     <string name="skits_site_link">Click here for contact information via the SKITS site.</string>
+    <string name="ranking_per_year">Ranking per year</string>
+    <string name="result_weather">Weather: %s</string>
+    <string name="skater_ranking_y_axis" />
 </resources>

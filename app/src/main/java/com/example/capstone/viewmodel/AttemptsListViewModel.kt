@@ -20,6 +20,8 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
 
     val attemptsList: LiveData<AttemptsList> = attemptsListRepository.attemptsList
 
+    val attemptsListOfSkater: LiveData<AttemptsList> = attemptsListRepository.attemptsListOfSkater
+
     private val _attemptsListFiltered: MutableLiveData<AttemptsList> = MutableLiveData()
     val attemptsListFiltered: LiveData<AttemptsList>
         get() = _attemptsListFiltered
@@ -34,11 +36,9 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             try {
                 if (season != null){
-                    Log.i("JA", "naar getAttemptsList want season = $season")
                     attemptsListRepository.getAttemptsList(season)
                 }
                 else {
-                    Log.i("JA", "naar getAttemptsListAllSeasons want season = $season")
                     attemptsListRepository.getAttemptsListAllSeasons()
                 }
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
@@ -68,7 +68,7 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
                 || attemptsList.value!!.attemptsList.isEmpty())
             _attemptsListFiltered.value = AttemptsList(filteredList)
         else {
-            for(attempt in attemptsListRepository.attemptsList.value?.attemptsList!!){
+            for(attempt in attemptsList.value?.attemptsList!!){
                 val skatersFound : List<Skater> = skatersList.filter{ s -> s.id == attempt.skaterId}
                 val fasterAttemptsSameSkaterFound : List<Attempt> = attemptsListRepository.attemptsList.value?.attemptsList!!.filter{ a -> a.skaterId == attempt.skaterId && a.time < attempt.time}
                 if(skatersFound.size == 1  && fasterAttemptsSameSkaterFound.isEmpty()) {
@@ -77,5 +77,43 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
             }
             _attemptsListFiltered.value = AttemptsList(filteredList)
         }
+    }
+
+    fun getRankingPerYear(skaterId: Int): ArrayList<Array<Int>> {
+        val rank = "RANK"
+
+        val skatersAttemptsList : List<Attempt> = attemptsList.value?.attemptsList!!.filter{ a -> a.skaterId == skaterId}
+
+        val latestYear = skatersAttemptsList.maxByOrNull { it.season }?.season
+        val firstYear = skatersAttemptsList.minByOrNull { it.season }?.season
+
+
+        val rankings: ArrayList<Array<Int>> = arrayListOf()
+
+        Log.i(rank, "skater id: $skaterId")
+        Log.i(rank, "latestYear: $latestYear")
+        Log.i(rank, "firstYear: $firstYear")
+
+        if (latestYear != null && firstYear != null) {
+            for (season in latestYear downTo firstYear) {
+                val skatersFastestAttempt: Attempt? = attemptsList.value?.attemptsList!!
+                        .filter{ a -> a.skaterId == skaterId && a.season == season}
+                        .minByOrNull { it.time }
+
+                val fasterAttempts: List<Attempt> = attemptsList.value?.attemptsList!!
+                        .filter { a ->
+                            a.skaterId != skaterId && a.time < skatersFastestAttempt?.time.toString() && a.season == season
+                        }
+                val amountFasterSkaters: Int = fasterAttempts.distinctBy { it.skaterId }.size
+
+                Log.i(rank, "$season | skatersFastestAttempt: $skatersFastestAttempt")
+                Log.i(rank, "$season | amountFasterSkaters: $amountFasterSkaters")
+
+                //todo filter right sex
+
+                rankings.add(arrayOf(season, amountFasterSkaters + 1))
+            }
+        }
+        return rankings
     }
 }

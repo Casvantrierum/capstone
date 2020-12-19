@@ -14,18 +14,22 @@ import java.text.SimpleDateFormat
 
 class AttemptsListRepository {
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
     private var attemptsCollection =
         firestore.collection("Attempts")
 
     private val _attemptsList: MutableLiveData<AttemptsList> = MutableLiveData()
-
     val attemptsList: LiveData<AttemptsList>
         get() = _attemptsList
 
+
+
+    private val _attemptsListOfSkater: MutableLiveData<AttemptsList> = MutableLiveData()
+    val attemptsListOfSkater: LiveData<AttemptsList>
+        get() = _attemptsListOfSkater
+
+
     //the CreateAttemptFragment can use this to see if creation succeeded
     private val _createSuccess: MutableLiveData<Boolean> = MutableLiveData()
-
     val createSuccess: LiveData<Boolean>
         get() = _createSuccess
 
@@ -97,7 +101,7 @@ class AttemptsListRepository {
                         list.addAll(documentsToAttemptsList(documents))
                     }
                     .await()
-                _attemptsList.value = AttemptsList(list);
+                _attemptsListOfSkater.value = AttemptsList(list);
             }
         }  catch (e : Exception) {
             throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")

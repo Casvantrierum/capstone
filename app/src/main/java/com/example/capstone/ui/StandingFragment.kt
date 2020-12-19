@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.capstone.MainActivity
 import com.example.capstone.R
 import com.example.capstone.adapter.StandingAdapter
 import com.example.capstone.model.Attempt
@@ -57,8 +56,8 @@ class StandingFragment : Fragment() {
         val month = current.monthValue.toString().toInt()
         val year = current.year.toString().toInt()
 
-        if (month >= 6) currentSeason = year
-        else currentSeason = year -1
+        currentSeason = if (month >= 6) year
+        else year - 1
         season = currentSeason
     }
 
@@ -77,30 +76,20 @@ class StandingFragment : Fragment() {
         user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             fab.show()
-            // Name, email address, and profile photo Url
-            //val name = user.displayName
-            val email = user!!.email
-            //val photoUrl: Uri? = user.photoUrl
-
-            // Check if user's email is verified
-            //val emailVerified = user.isEmailVerified
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            val uid = user!!.uid
+//            val email = user!!.email
+//            val uid = user!!.uid
         }
         else fab.hide()
 
         if (season == currentSeason + 1){
             tvSeason.text = getString(R.string.all_time)
             attemptsListViewModel.getAttemptsList(null)
-            ibUp.visibility = View.INVISIBLE;
+            ibUp.visibility = View.INVISIBLE
         }
         else{
             attemptsListViewModel.getAttemptsList(season)
-            tvSeason.text = context?.getString(R.string.standing_season, season, season+1)
-            ibUp.visibility = View.VISIBLE;
+            tvSeason.text = context?.getString(R.string.standing_season, season, season + 1)
+            ibUp.visibility = View.VISIBLE
         }
 
         standingAdapter = StandingAdapter(attemptsListFiltered, skatersList, ::onSkaterClick)
@@ -135,19 +124,19 @@ class StandingFragment : Fragment() {
             else if(season == currentSeason + 1){
                 attemptsListViewModel.getAttemptsList(null)
                 tvSeason.text = getString(R.string.all_time)
-                ibUp.visibility = View.INVISIBLE;
+                ibUp.visibility = View.INVISIBLE
             }
             else {
                 attemptsListViewModel.getAttemptsList(season)
-                tvSeason.text = getString(R.string.standing_season, season, season+1)
+                tvSeason.text = getString(R.string.standing_season, season, season + 1)
             }
         }
 
         view.findViewById<ImageButton>(R.id.ibDown).setOnClickListener {
             season--
-            tvSeason.text = getString(R.string.standing_season, season, season+1)
+            tvSeason.text = getString(R.string.standing_season, season, season + 1)
             attemptsListViewModel.getAttemptsList(season)
-            ibUp.visibility = View.VISIBLE;
+            ibUp.visibility = View.VISIBLE
         }
 
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     private val skatersListViewModel: SkatersListViewModel by activityViewModels()
     private val addViewModel: AddViewModel by viewModels()
+
     private var skatersList = arrayListOf<Skater>()
     private val emptySkater = Skater(0, "New skater", "", "m", null)//TODO hc
     private  var selectedSkater = emptySkater
@@ -110,6 +112,7 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         btnAdd.setOnClickListener {
             if(checkInput()){
+                btnAdd.isEnabled = false
                 var sex = getString(R.string.female_short)
                 if (selectedSkater.id == 0){
                     val id = rgSex.checkedRadioButtonId
@@ -145,6 +148,19 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
             skatersList.add(emptySkater)
             skatersList.addAll(it.skatersList)
             aa.notifyDataSetChanged()
+        })
+
+        addViewModel.fetching.observe(viewLifecycleOwner, {
+            if(it) Log.i("FETCHING","TRUE")
+            else Log.i("FETCHING","false")
+        })
+
+        addViewModel.errorText.observe(viewLifecycleOwner, {
+            Log.i("ERROR", "errorText: $it")
+            Toast.makeText(
+                requireActivity(), it,
+                Toast.LENGTH_SHORT
+            ).show()
         })
     }
 
