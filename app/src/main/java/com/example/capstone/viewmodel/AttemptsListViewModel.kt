@@ -79,39 +79,40 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    fun getRankingPerYear(skaterId: Int): ArrayList<Array<Int>> {
-        val rank = "RANK"
+    fun getRankingPerYear(skaterId: Int, skatersListSameSex: List<Skater>): ArrayList<Array<Int>> {
 
         val skatersAttemptsList : List<Attempt> = attemptsList.value?.attemptsList!!.filter{ a -> a.skaterId == skaterId}
 
         val latestYear = skatersAttemptsList.maxByOrNull { it.season }?.season
         val firstYear = skatersAttemptsList.minByOrNull { it.season }?.season
 
+        //filter same sex ids
+        val sameSexIds: ArrayList<Int> = arrayListOf()
+        for(skater in skatersListSameSex){
+            sameSexIds.add(skater.id)
+        }
 
         val rankings: ArrayList<Array<Int>> = arrayListOf()
 
-        Log.i(rank, "skater id: $skaterId")
-        Log.i(rank, "latestYear: $latestYear")
-        Log.i(rank, "firstYear: $firstYear")
-
         if (latestYear != null && firstYear != null) {
-            for (season in latestYear downTo firstYear) {
+            for (season in firstYear..latestYear) {
                 val skatersFastestAttempt: Attempt? = attemptsList.value?.attemptsList!!
                         .filter{ a -> a.skaterId == skaterId && a.season == season}
                         .minByOrNull { it.time }
 
-                val fasterAttempts: List<Attempt> = attemptsList.value?.attemptsList!!
-                        .filter { a ->
-                            a.skaterId != skaterId && a.time < skatersFastestAttempt?.time.toString() && a.season == season
-                        }
-                val amountFasterSkaters: Int = fasterAttempts.distinctBy { it.skaterId }.size
+                if (skatersFastestAttempt == null) rankings.add(arrayOf(season, 0))
+                else {
+                    val fasterAttempts: List<Attempt> = attemptsList.value?.attemptsList!!
+                            .filter { a ->
+                                a.skaterId != skaterId
+                                        && a.time < skatersFastestAttempt.time.toString()
+                                        && a.season == season
+                                        && a.skaterId in sameSexIds
+                            }
+                    val amountFasterSkaters: Int = fasterAttempts.distinctBy { it.skaterId }.size
 
-                Log.i(rank, "$season | skatersFastestAttempt: $skatersFastestAttempt")
-                Log.i(rank, "$season | amountFasterSkaters: $amountFasterSkaters")
-
-                //todo filter right sex
-
-                rankings.add(arrayOf(season, amountFasterSkaters + 1))
+                    rankings.add(arrayOf(season, amountFasterSkaters + 1))
+                }
             }
         }
         return rankings

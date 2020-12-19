@@ -122,8 +122,6 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 }
                 else sex = selectedSkater.sex
 
-                //Log.i("PROCEED", "with selectedSkater: $selectedSkater")
-
                 addViewModel.addSkater(
                         (selectedSkater.id == 0),
                         etFirstname.text.toString(),

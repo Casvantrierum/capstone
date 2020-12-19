@@ -34,13 +34,6 @@ class LoginFragment : Fragment() {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
-        //updateUI(currentUser)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,7 +48,6 @@ class LoginFragment : Fragment() {
                                 requireActivity(), "Authentication success.",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val user = mAuth.currentUser
 
                             findNavController().popBackStack()
                             //updateUI(user)
