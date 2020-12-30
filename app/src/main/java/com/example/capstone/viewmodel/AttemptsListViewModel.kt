@@ -1,6 +1,7 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -37,8 +38,7 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
                     attemptsListRepository.getAttemptsListAllSeasons()
                 }
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
-                val errorMsg = "Something went wrong while retrieving attempt" //todo hc
-                _errorText.value = errorMsg
+                _errorText.value = ex.message
             }
         }
     }
@@ -48,8 +48,7 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
             try {
                 attemptsListRepository.getAttemptsListSkater(skaterId)
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
-                val errorMsg = "Something went wrong while retrieving attempt"
-                _errorText.value = errorMsg
+                _errorText.value = ex.message
             }
         }
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +32,11 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val addViewModel: AddViewModel by viewModels()
 
     private var skatersList = arrayListOf<Skater>()
-    private val emptySkater = Skater(0, "New skater", "", "m", null)//TODO hc
-    private  var selectedSkater = emptySkater
+
+    //empty skater to use in spinner
+    private lateinit var emptySkater: Skater
+
+    private lateinit var selectedSkater: Skater
 
     override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
 
@@ -80,6 +84,16 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        emptySkater = Skater(
+                0,
+                context?.getString(R.string.new_skater)!!,
+                context?.getString(R.string.empty_string)!!,
+                context?.getString(R.string.male_short)!!,
+                null
+            )
+
+        this.selectedSkater = emptySkater
 
         spinnerSkater.onItemSelectedListener = this
 
@@ -147,7 +161,7 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         skatersListViewModel.allSkatersList.observe(viewLifecycleOwner, {
             skatersList.clear()
-            skatersList.add(emptySkater)
+            emptySkater.let { it1 -> skatersList.add(it1) }
             skatersList.addAll(it.skatersList)
             aa.notifyDataSetChanged()
         })
@@ -199,8 +213,10 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         if (year == "")
             wrongElements += " ${getString(R.string.input_year)},"
 
-        val timeRegex = getString(R.string.regexp_input_time).toRegex()
-        if (!etTime.text.toString().matches(timeRegex)) wrongElements += " ${getString(R.string.input_time)},"
+//        //val timeRegex = getString(R.string.regex_input_time).toRegex()
+        val timePattern = "[0-9]{1,2}.[0-5][0-9]?".toRegex()
+
+        if (!etTime.text.toString().matches(timePattern)) wrongElements += " ${getString(R.string.input_time)},"
 
         return if (wrongElements == ""){
             true

@@ -1,7 +1,9 @@
 package com.example.capstone.repository
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.capstone.R
 import com.example.capstone.model.attempts.Attempt
 import com.example.capstone.model.attempts.AttemptsList
 import com.google.firebase.firestore.FirebaseFirestore
@@ -98,7 +100,7 @@ class AttemptsListRepository {
                 _attemptsListOfSkater.value = AttemptsList(list)
             }
         }  catch (e : Exception) {
-            throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")
+            throw AttemptRetrievalError(Resources.getSystem().getString(R.string.error_get_attempts))
         }
     }
 
@@ -111,7 +113,7 @@ class AttemptsListRepository {
                         .await()
             }
         }  catch (e : Exception) {
-            throw AttemptSaveError("Adding-firebase-task was unsuccessful", e)
+            throw AttemptSaveError(Resources.getSystem().getString(R.string.error_add_attempt), e)
         }
     }
 
