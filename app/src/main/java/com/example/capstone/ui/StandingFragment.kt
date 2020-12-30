@@ -44,9 +44,9 @@ class StandingFragment : Fragment() {
 
     private var season: Int = 0
     private var currentSeason: Int = 0
-    private var sex: String = "m" //todo hc
+    private lateinit var sex: String
 
-    private var user: FirebaseUser? = null
+    private  var user: FirebaseUser? = null
 
     private lateinit var standingAdapter: StandingAdapter
 
@@ -77,6 +77,8 @@ class StandingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         pbStanding.visibility = View.VISIBLE
+
+        sex = context?.getString(R.string.male_short).toString()
 
         user = FirebaseAuth.getInstance().currentUser
         if (user != null) {

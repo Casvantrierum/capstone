@@ -158,7 +158,6 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         })
 
         addViewModel.errorText.observe(viewLifecycleOwner, {
-            Log.i("ERROR", "errorText: $it")
             Toast.makeText(
                     context, it,
                     Toast.LENGTH_LONG
@@ -166,9 +165,14 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         })
 
         addViewModel.createSuccess.observe(viewLifecycleOwner, {
-            Log.i("createSucces", "value: $it")
-            if (it)
+            if (it) {
                 findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
+
+                Toast.makeText(
+                        context, context?.getString(R.string.add_succesfull),
+                        Toast.LENGTH_LONG
+                ).show()
+            }
         })
     }
 
@@ -192,7 +196,7 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         if (year == "")
             wrongElements += " ${getString(R.string.input_year)},"
 
-        val timeRegex = "[0-9]?[0-9].[0-5][0-9]".toRegex()
+        val timeRegex = getString(R.string.regexp_input_time).toRegex()
         if (!etTime.text.toString().matches(timeRegex)) wrongElements += " ${getString(R.string.input_time)},"
 
         return if (wrongElements == ""){
