@@ -98,7 +98,6 @@ class StandingFragment : Fragment() {
         rvStanding.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         rvStanding.adapter = standingAdapter
 
-
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_standing_to_addAttemptFragment)
         }
@@ -162,6 +161,14 @@ class StandingFragment : Fragment() {
         attemptsListViewModel.attemptsListFiltered.observe(viewLifecycleOwner, {
             attemptsListFiltered.clear()
             attemptsListFiltered.addAll(it.attemptsList)
+
+
+            if (attemptsListFiltered.isEmpty()) {
+                tvNoAttempts.visibility = View.VISIBLE
+                var sexFull = getString(R.string.female).toLowerCase()
+                if (sex == getString(R.string.male_short))  sexFull = getString(R.string.male).toLowerCase()
+                tvNoAttempts.text = getString(R.string.no_attempts_this_year, sexFull)
+            } else tvNoAttempts.visibility = View.INVISIBLE
 
             standingAdapter.notifyDataSetChanged()
         })
