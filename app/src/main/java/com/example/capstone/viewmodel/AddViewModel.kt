@@ -1,7 +1,10 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,8 +15,8 @@ import com.example.capstone.repository.AttemptsListRepository
 import com.example.capstone.repository.SSRRepository
 import com.example.capstone.repository.SkatersListRepository
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
 import java.util.*
+
 
 class AddViewModel(application: Application) : AndroidViewModel(application)  {
     private val TAG = "FIRESTORE"
@@ -26,11 +29,14 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
     val fetching: LiveData<Boolean>
         get() = _fetching
 
-    val createSuccess: LiveData<Boolean> = skatersListRepository.createSuccess
+    private val _createSuccess: MutableLiveData<Boolean> = MutableLiveData()
+    val createSuccess: LiveData<Boolean>
+        get() = _createSuccess
 
     private val _errorText: MutableLiveData<String> = MutableLiveData()
     val errorText: LiveData<String>
         get() = _errorText
+
 
     fun addSkater(new: Boolean, firstname: String, lastname: String, sex: String, skitsID: Int,
                   time: String, weather: String, day: String, month: String, year: String) {
@@ -41,9 +47,9 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                     ssrRepository.getSSRId(firstname, lastname)
                     val ssrId = ssrRepository.resultId.value?.skaters?.get(0)?.id
                     skatersListRepository.addSkater(
-                        Skater(
-                            skitsID, firstname, lastname, sex, ssrId
-                        )
+                            Skater(
+                                    skitsID, firstname, lastname, sex, ssrId
+                            )
                     )
                     skatersListRepository.getSkatersList()
                 }
@@ -62,24 +68,31 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                 val firebaseTimeStamp = com.google.firebase.Timestamp(seconds, 0)
 
                 attemptsListRepository.addAttempt(
-                    Attempt(
-                        skitsID,
-                        0,
-                        season,
-                        time,
-                        weather,
-                        firebaseTimeStamp
-                    )
+                        Attempt(
+                                skitsID,
+                                0,
+                                season,
+                                time,
+                                weather,
+                                firebaseTimeStamp
+                        )
                 )
 
-            } catch (ex: SkatersListRepository.SkatersListRetrievalError) {
-                val errorMsg = "Something went wrong while adding a skater"
-                Log.e(TAG, ex.message ?: errorMsg)
-                _errorText.value = errorMsg
+                _createSuccess.value = true;
+
             } catch (ex: SkatersListRepository.SkatersListSaveError) {
                 val errorMsg = "Something went wrong while adding a skater"
                 Log.e(TAG, ex.message ?: errorMsg)
+                Log.i("OEPS", errorMsg)
                 _errorText.value = errorMsg
+                _createSuccess.value = false;
+            }
+            catch (ex: AttemptsListRepository.AttemptSaveError) {
+                val errorMsg = "Something went wrong while adding a n attempt"
+                Log.e(TAG, ex.message ?: errorMsg)
+                Log.i("OEPS", errorMsg)
+                _errorText.value = errorMsg
+                _createSuccess.value = false;
             }
 
             _fetching.value = false

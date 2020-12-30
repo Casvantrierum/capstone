@@ -1,5 +1,6 @@
 package com.example.capstone.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.capstone.api.SSRApi
@@ -41,6 +42,7 @@ class SSRRepository {
             }
             _resultId.value = result
         } catch (error: Throwable) {
+            Log.i("OEPS", "no connection for SSR")
             throw SSRRefreshError("Unable to refresh speedskating id data", error)
         }
     }

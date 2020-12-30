@@ -85,6 +85,7 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         spinnerSkater.onItemSelectedListener = this
 
+        pbAdd.visibility = View.INVISIBLE
 
         // Create an ArrayAdapter using a simple spinner layout and languages array
         val aa = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, skatersList)
@@ -134,7 +135,6 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
                         etDateMonth.text.toString(),
                         etDateYear.text.toString())
 
-                findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
             }
         }
 
@@ -149,16 +149,26 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         })
 
         addViewModel.fetching.observe(viewLifecycleOwner, {
-            if(it) Log.i("FETCHING","TRUE")
-            else Log.i("FETCHING","false")
+            if (it) {
+                pbAdd.visibility = View.VISIBLE
+            } else {
+                pbAdd.visibility = View.INVISIBLE
+                btnAdd.isEnabled = true
+            }
         })
 
         addViewModel.errorText.observe(viewLifecycleOwner, {
             Log.i("ERROR", "errorText: $it")
             Toast.makeText(
-                requireActivity(), it,
-                Toast.LENGTH_SHORT
+                    context, it,
+                    Toast.LENGTH_LONG
             ).show()
+        })
+
+        addViewModel.createSuccess.observe(viewLifecycleOwner, {
+            Log.i("createSucces", "value: $it")
+            if (it)
+                findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
         })
     }
 

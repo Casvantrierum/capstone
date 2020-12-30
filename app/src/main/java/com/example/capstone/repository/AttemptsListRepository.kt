@@ -1,6 +1,7 @@
 package com.example.capstone.repository
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -119,14 +120,6 @@ class AttemptsListRepository {
             withTimeout(5_000) {
                 attemptsCollection
                         .document().set(attempt)
-                        .addOnFailureListener {
-                            Log.i("WRONG1", "WRONG1")
-                            Log.e("WRONG1", "WRONG1")
-                        }
-                        .addOnCanceledListener {
-                            Log.i("WRONG2", "WRONG2")
-                            Log.e("WRONG2", "WRONG2")
-                        }
                         .await()
             }
         }  catch (e : Exception) {
