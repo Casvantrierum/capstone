@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:foregroundTint="#FFFFFF"
+    android:visibility="visible"
     tools:context=".ui.StandingFragment">
 
     <ImageButton
@@ -29,6 +30,15 @@
         app:layout_constraintEnd_toStartOf="@+id/tvSeason"
         app:layout_constraintTop_toTopOf="@+id/tvSeason"
         app:tint="@color/colorAccent" />
+
+    <ProgressBar
+        android:id="@+id/pbStanding"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
 
     <RadioGroup
         android:id="@+id/rgSex"
@@ -90,5 +100,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/tvNoSkaters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_skaters_found"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/rvStanding"
+        app:layout_constraintEnd_toEndOf="@+id/rvStanding"
+        app:layout_constraintStart_toStartOf="@+id/rvStanding"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
+
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/retry"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNoSkaters"
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

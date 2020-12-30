@@ -55,11 +55,11 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                 calendar.set(year.toInt(), month.toInt() - 1, day.toInt(), 0, 0);
                 val seconds: Long = calendar.timeInMillis / 1000
 
-                var season: Int
+                val season: Int
                 if (month.toInt() >= 6) season = year.toInt()
                 else season = year.toInt() - 1
 
-                var firebaseTimeStamp = com.google.firebase.Timestamp(seconds, 0)
+                val firebaseTimeStamp = com.google.firebase.Timestamp(seconds, 0)
 
                 attemptsListRepository.addAttempt(
                     Attempt(
@@ -73,6 +73,10 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                 )
 
             } catch (ex: SkatersListRepository.SkatersListRetrievalError) {
+                val errorMsg = "Something went wrong while adding a skater"
+                Log.e(TAG, ex.message ?: errorMsg)
+                _errorText.value = errorMsg
+            } catch (ex: SkatersListRepository.SkatersListSaveError) {
                 val errorMsg = "Something went wrong while adding a skater"
                 Log.e(TAG, ex.message ?: errorMsg)
                 _errorText.value = errorMsg

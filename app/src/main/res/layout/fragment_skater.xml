@@ -88,10 +88,17 @@
     </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
 
     <TextView
-        android:id="@+id/tvNoConnection"
+        android:id="@+id/tvErrorPR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/rvPersonalRecords"
         app:layout_constraintStart_toStartOf="@+id/rvPersonalRecords" />
+
+    <TextView
+        android:id="@+id/tvErrorResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/rvResults"
+        app:layout_constraintTop_toBottomOf="@+id/tvResultsTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

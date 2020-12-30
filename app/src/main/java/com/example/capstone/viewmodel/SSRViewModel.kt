@@ -28,8 +28,6 @@ class SSRViewModel(application: Application) : AndroidViewModel(application) {
                     ssrRepository.getSSRPersonalRecord(skater.ssrId)
                 } catch (error: SSRRepository.SSRRefreshError) {
                     _errorText.value = error.message
-                    Log.e("SSR error", error.cause.toString())
-                    Log.i("SSR error", error.cause.toString())
                 }
             }
         }

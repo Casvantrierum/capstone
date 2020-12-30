@@ -1,8 +1,13 @@
 package com.example.capstone.repository
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.capstone.MainActivity
 import com.example.capstone.model.Attempt
 import com.example.capstone.model.AttemptsList
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,12 +26,9 @@ class AttemptsListRepository {
     val attemptsList: LiveData<AttemptsList>
         get() = _attemptsList
 
-
-
     private val _attemptsListOfSkater: MutableLiveData<AttemptsList> = MutableLiveData()
     val attemptsListOfSkater: LiveData<AttemptsList>
         get() = _attemptsListOfSkater
-
 
     //the CreateAttemptFragment can use this to see if creation succeeded
     private val _createSuccess: MutableLiveData<Boolean> = MutableLiveData()
@@ -80,6 +82,9 @@ class AttemptsListRepository {
                         .addOnSuccessListener { documents ->
                             list.addAll(documentsToAttemptsList(documents))
                         }
+                        .addOnFailureListener {
+                            Log.i("OK3", "IN ON FAILURE")
+                        }
                         .await()
                 _attemptsList.value = AttemptsList(list);
             }
@@ -114,13 +119,22 @@ class AttemptsListRepository {
             withTimeout(5_000) {
                 attemptsCollection
                         .document().set(attempt)
+                        .addOnFailureListener {
+                            Log.i("WRONG1", "WRONG1")
+                            Log.e("WRONG1", "WRONG1")
+                        }
+                        .addOnCanceledListener {
+                            Log.i("WRONG2", "WRONG2")
+                            Log.e("WRONG2", "WRONG2")
+                        }
                         .await()
             }
         }  catch (e : Exception) {
-            throw AttemptRetrievalError("Adding-firebase-task was unsuccessful")
+            throw AttemptSaveError("Adding-firebase-task was unsuccessful", e)
         }
     }
 
     class AttemptSaveError(message: String, cause: Throwable) : Exception(message, cause)
     class AttemptRetrievalError(message: String) : Exception(message)
+    
 }

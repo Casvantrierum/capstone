@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageButton
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -23,6 +25,7 @@ import com.example.capstone.viewmodel.SkatersListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_standing.*
+import kotlinx.android.synthetic.main.fragment_standing.view.*
 import java.time.LocalDateTime
 
 
@@ -73,11 +76,11 @@ class StandingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        pbStanding.visibility = View.VISIBLE
+
         user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             fab.show()
-//            val email = user!!.email
-//            val uid = user!!.uid
         }
         else fab.hide()
 
@@ -99,6 +102,12 @@ class StandingFragment : Fragment() {
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_standing_to_addAttemptFragment)
+        }
+
+        btnRetry.setOnClickListener {
+
+            skatersListViewModel.getSkatersList()
+            attemptsListViewModel.getAttemptsList(season)
         }
 
         rgSex.setOnCheckedChangeListener { _, checkedId ->
@@ -143,8 +152,14 @@ class StandingFragment : Fragment() {
             attemptsList.clear()
             attemptsList.addAll(it.attemptsList)
 
+            if(attemptsList.size == 0){
+                Log.i("OBSERVE", "EMPTY LIST!!")
+            }
+
             attemptsListViewModel.getAttemptListFiltered(skatersList)
             standingAdapter.notifyDataSetChanged()
+
+            pbStanding.visibility = View.INVISIBLE
         })
 
         attemptsListViewModel.attemptsListFiltered.observe(viewLifecycleOwner, {
@@ -153,6 +168,19 @@ class StandingFragment : Fragment() {
 
             standingAdapter.notifyDataSetChanged()
         })
+
+
+        skatersListViewModel.allSkatersList.observe(viewLifecycleOwner, {
+            if (it.skatersList.size == 0){
+                tvNoSkaters.visibility = View.VISIBLE
+                btnRetry.visibility = View.VISIBLE
+            }
+            else {
+                tvNoSkaters.visibility = View.INVISIBLE
+                btnRetry.visibility = View.INVISIBLE
+            }
+        })
+
 
         skatersListViewModel.maleSkatersList.observe(viewLifecycleOwner, {
             maleSkatersList.clear()
@@ -177,6 +205,22 @@ class StandingFragment : Fragment() {
                 skatersList.addAll(femaleSkatersList)
             }
             attemptsListViewModel.getAttemptListFiltered(skatersList)
+        })
+
+        skatersListViewModel.errorText.observe(viewLifecycleOwner, {
+            pbStanding.visibility = View.INVISIBLE
+            Toast.makeText(
+                    context, it,
+                    Toast.LENGTH_SHORT
+            ).show()
+        })
+
+        attemptsListViewModel.errorText.observe(viewLifecycleOwner, {
+            pbStanding.visibility = View.INVISIBLE
+            Toast.makeText(
+                    context, it,
+                    Toast.LENGTH_LONG
+            ).show()
         })
     }
 

@@ -6,8 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import com.example.capstone.model.Attempt
 import com.example.capstone.model.Skater
 import com.example.capstone.model.SkatersList
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.util.Assert.fail
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
 
@@ -39,6 +43,8 @@ class SkatersListRepository {
         val listAll = arrayListOf<Skater>()
         val listMale = arrayListOf<Skater>()
         val listFemale = arrayListOf<Skater>()
+        Log.i("OKIE","in splitList")
+        Log.i("OKIE", "documents size: ${documents.size()}")
         for (document in documents) {
             val id          = document.id.toInt()
             var firstname    = document.data["firstname"].toString()
@@ -62,6 +68,7 @@ class SkatersListRepository {
         try {
             //firestore has support for coroutines via the extra dependency we've added :)
             withTimeout(5_000) {
+
                 skatersCollection
                         .get()
                         .addOnSuccessListener { documents ->
@@ -73,6 +80,7 @@ class SkatersListRepository {
             throw SkatersListRetrievalError("Retrieval-firebase-task was unsuccessful")
         }
     }
+
 
     suspend fun addSkater(skater: Skater){
         try {

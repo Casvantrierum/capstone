@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -102,6 +103,22 @@ class WinnersFragment : Fragment() {
         skatersListViewModel.femaleSkatersList.observe(viewLifecycleOwner, {
             femaleSkatersList.clear()
             femaleSkatersList.addAll(it.skatersList)
+        })
+
+        skatersListViewModel.errorText.observe(viewLifecycleOwner, {
+            Log.i("OBSERVE", "W skaterslist errortext: $it")
+            Toast.makeText(
+                    requireActivity(), it,
+                    Toast.LENGTH_SHORT
+            ).show()
+        })
+
+        attemptsListViewModel.errorText.observe(viewLifecycleOwner, {
+            Log.i("OBSERVE", "W attemptslist errortext: $it")
+            Toast.makeText(
+                    requireActivity(), it,
+                    Toast.LENGTH_SHORT
+            ).show()
         })
     }
 

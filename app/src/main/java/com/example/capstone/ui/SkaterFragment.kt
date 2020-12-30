@@ -3,7 +3,6 @@ package com.example.capstone.ui
 import android.content.ComponentName
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -168,9 +167,15 @@ class SkaterFragment : Fragment() {
 
         ssrViewModel.errorText.observe(viewLifecycleOwner) {
             personalRecords.clear()
-            tvNoConnection.text = it
+            tvErrorPR.text = it
             tvPRTitle.text = getString(R.string.empty_string)
             personalRecordAdapter.notifyDataSetChanged()
+        }
+
+        attemptsListViewModel.errorText.observe(viewLifecycleOwner) {
+            attemptsListOfSkater.clear()
+            tvErrorResults.text = it
+            skaterResultAdapter.notifyDataSetChanged()
         }
     }
 

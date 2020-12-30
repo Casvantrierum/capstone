@@ -44,7 +44,7 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
                 val errorMsg = "Something went wrong while retrieving attempt"
                 Log.e(TAG, ex.message ?: errorMsg)
-                _errorText.value = errorMsg
+                _errorText.value = "errorMsg"
             }
         }
     }
