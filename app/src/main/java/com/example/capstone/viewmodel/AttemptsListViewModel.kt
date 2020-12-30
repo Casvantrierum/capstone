@@ -1,21 +1,18 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.AttemptsList
-import com.example.capstone.model.Skater
-import com.example.capstone.model.SkatersList
+import com.example.capstone.model.attempts.Attempt
+import com.example.capstone.model.attempts.AttemptsList
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.repository.AttemptsListRepository
 import kotlinx.coroutines.launch
 import kotlin.collections.arrayListOf as arrayListOf
 
 class AttemptsListViewModel(application: Application) : AndroidViewModel(application) {
-    private val TAG = "FIRESTORE"
     private val attemptsListRepository: AttemptsListRepository = AttemptsListRepository()
 
     val attemptsList: LiveData<AttemptsList> = attemptsListRepository.attemptsList
@@ -25,8 +22,6 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
     private val _attemptsListFiltered: MutableLiveData<AttemptsList> = MutableLiveData()
     val attemptsListFiltered: LiveData<AttemptsList>
         get() = _attemptsListFiltered
-
-    val createSuccess: LiveData<Boolean> = attemptsListRepository.createSuccess
 
     private val _errorText: MutableLiveData<String> = MutableLiveData()
     val errorText: LiveData<String>
@@ -42,9 +37,8 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
                     attemptsListRepository.getAttemptsListAllSeasons()
                 }
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
-                val errorMsg = "Something went wrong while retrieving attempt"
-                Log.e(TAG, ex.message ?: errorMsg)
-                _errorText.value = "errorMsg"
+                val errorMsg = "Something went wrong while retrieving attempt" //todo hc
+                _errorText.value = errorMsg
             }
         }
     }
@@ -55,7 +49,6 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
                 attemptsListRepository.getAttemptsListSkater(skaterId)
             } catch (ex: AttemptsListRepository.AttemptRetrievalError) {
                 val errorMsg = "Something went wrong while retrieving attempt"
-                Log.e(TAG, ex.message ?: errorMsg)
                 _errorText.value = errorMsg
             }
         }
@@ -105,7 +98,7 @@ class AttemptsListViewModel(application: Application) : AndroidViewModel(applica
                     val fasterAttempts: List<Attempt> = attemptsList.value?.attemptsList!!
                             .filter { a ->
                                 a.skaterId != skaterId
-                                        && a.time < skatersFastestAttempt.time.toString()
+                                        && a.time < skatersFastestAttempt.time
                                         && a.season == season
                                         && a.skaterId in sameSexIds
                             }

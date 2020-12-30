@@ -2,13 +2,11 @@ package com.example.capstone.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,15 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
 import com.example.capstone.adapter.StandingAdapter
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.Skater
+import com.example.capstone.model.attempts.Attempt
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
 import com.example.capstone.viewmodel.SkaterViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_standing.*
-import kotlinx.android.synthetic.main.fragment_standing.view.*
 import java.time.LocalDateTime
 
 
@@ -131,15 +128,17 @@ class StandingFragment : Fragment() {
 
         view.findViewById<ImageButton>(R.id.ibUp).setOnClickListener {
             season++
-            if(season > currentSeason + 1) season--
-            else if(season == currentSeason + 1){
-                attemptsListViewModel.getAttemptsList(null)
-                tvSeason.text = getString(R.string.all_time)
-                ibUp.visibility = View.INVISIBLE
-            }
-            else {
-                attemptsListViewModel.getAttemptsList(season)
-                tvSeason.text = getString(R.string.standing_season, season, season + 1)
+            when {
+                season > currentSeason + 1 -> season--
+                season == currentSeason + 1 -> {
+                    attemptsListViewModel.getAttemptsList(null)
+                    tvSeason.text = getString(R.string.all_time)
+                    ibUp.visibility = View.INVISIBLE
+                }
+                else -> {
+                    attemptsListViewModel.getAttemptsList(season)
+                    tvSeason.text = getString(R.string.standing_season, season, season + 1)
+                }
             }
         }
 
@@ -153,10 +152,6 @@ class StandingFragment : Fragment() {
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {
             attemptsList.clear()
             attemptsList.addAll(it.attemptsList)
-
-            if(attemptsList.size == 0){
-                Log.i("OBSERVE", "EMPTY LIST!!")
-            }
 
             attemptsListViewModel.getAttemptListFiltered(skatersList)
             standingAdapter.notifyDataSetChanged()

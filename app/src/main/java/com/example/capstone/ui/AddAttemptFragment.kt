@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.capstone.R
-import com.example.capstone.model.Skater
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.viewmodel.AddViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
 import kotlinx.android.synthetic.main.fragment_add_attempt.*
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_add_attempt.rbFemale
 import kotlinx.android.synthetic.main.fragment_add_attempt.rbMale
 import kotlinx.android.synthetic.main.fragment_add_attempt.rgSex
 import java.util.*
-
 
 class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
@@ -123,13 +121,19 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 }
                 else sex = selectedSkater.sex
 
+                var time :String = etTime.text.toString()
+
+                if (time[1] == '.'){
+                    time = "0$time" // add zero to time is minutes is only one digit for sorting
+                }
+
                 addViewModel.addSkater(
                         (selectedSkater.id == 0),
                         etFirstname.text.toString(),
                         etLastname.text.toString(),
                         sex,
                         etSkitsId.text.toString().toInt(),
-                        etTime.text.toString(),
+                        time,
                         etWeather.text.toString(),
                         etDateDay.text.toString(),
                         etDateMonth.text.toString(),
@@ -166,13 +170,12 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         addViewModel.createSuccess.observe(viewLifecycleOwner, {
             if (it) {
-                findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
-
                 Toast.makeText(
                         context, context?.getString(R.string.add_succesfull),
                         Toast.LENGTH_LONG
                 ).show()
             }
+            findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
         })
     }
 

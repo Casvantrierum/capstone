@@ -1,16 +1,12 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.util.Log
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.Skater
+import com.example.capstone.model.attempts.Attempt
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.repository.AttemptsListRepository
 import com.example.capstone.repository.SSRRepository
 import com.example.capstone.repository.SkatersListRepository
@@ -19,7 +15,6 @@ import java.util.*
 
 
 class AddViewModel(application: Application) : AndroidViewModel(application)  {
-    private val TAG = "FIRESTORE"
     private val skatersListRepository: SkatersListRepository = SkatersListRepository()
     private val attemptsListRepository: AttemptsListRepository = AttemptsListRepository()
 
@@ -58,12 +53,11 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
 
                 // the correct way to get today's date
                 val calendar = Calendar.getInstance()
-                calendar.set(year.toInt(), month.toInt() - 1, day.toInt(), 0, 0);
+                calendar.set(year.toInt(), month.toInt() - 1, day.toInt(), 0, 0)
                 val seconds: Long = calendar.timeInMillis / 1000
 
-                val season: Int
-                if (month.toInt() >= 6) season = year.toInt()
-                else season = year.toInt() - 1
+                val season: Int = if (month.toInt() >= 6) year.toInt()
+                else year.toInt() - 1
 
                 val firebaseTimeStamp = com.google.firebase.Timestamp(seconds, 0)
 
@@ -78,21 +72,17 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                         )
                 )
 
-                _createSuccess.value = true;
+                _createSuccess.value = true
 
             } catch (ex: SkatersListRepository.SkatersListSaveError) {
-                val errorMsg = "Something went wrong while adding a skater"
-                Log.e(TAG, ex.message ?: errorMsg)
-                Log.i("OEPS", errorMsg)
+                val errorMsg = "Something went wrong while adding a skater" //todo hc
                 _errorText.value = errorMsg
-                _createSuccess.value = false;
+                _createSuccess.value = false
             }
             catch (ex: AttemptsListRepository.AttemptSaveError) {
                 val errorMsg = "Something went wrong while adding a n attempt"
-                Log.e(TAG, ex.message ?: errorMsg)
-                Log.i("OEPS", errorMsg)
                 _errorText.value = errorMsg
-                _createSuccess.value = false;
+                _createSuccess.value = false
             }
 
             _fetching.value = false

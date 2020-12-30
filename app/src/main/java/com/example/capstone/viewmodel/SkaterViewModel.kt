@@ -1,14 +1,10 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.capstone.model.Skater
-import com.example.capstone.repository.AttemptsListRepository
-import kotlinx.coroutines.launch
+import com.example.capstone.model.skaters.Skater
 
 class SkaterViewModel (application: Application) : AndroidViewModel(application)  {
 

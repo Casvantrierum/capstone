@@ -1,7 +1,7 @@
 package com.example.capstone.api
 
-import com.example.capstone.model.SSRId.IDLookUpResult
-import com.example.capstone.model.SSRResult
+import com.example.capstone.model.ssrId.IDLookUpResult
+import com.example.capstone.model.ssrPR.SSRResult
 import retrofit2.http.GET
 import retrofit2.http.Query
 

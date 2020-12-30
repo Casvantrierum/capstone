@@ -1,4 +1,4 @@
-package com.example.capstone.model
+package com.example.capstone.model.skaters
 
 data class Skater (
         val id: Int,

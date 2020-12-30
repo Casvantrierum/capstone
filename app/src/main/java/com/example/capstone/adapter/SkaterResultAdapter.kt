@@ -1,12 +1,13 @@
 package com.example.capstone.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
-import com.example.capstone.model.Attempt
+import com.example.capstone.model.attempts.Attempt
 import kotlinx.android.synthetic.main.item_result.view.*
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -30,6 +31,7 @@ class SkaterResultAdapter (private val attemptsList: List<Attempt>) :
         }
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            @SuppressLint("SimpleDateFormat")
             fun databind(attempt: Attempt, position: Int) {
                 val dateInput = attempt.date
                 val milliseconds = dateInput.seconds * 1000 + dateInput.nanoseconds / 1000000
@@ -39,7 +41,7 @@ class SkaterResultAdapter (private val attemptsList: List<Attempt>) :
 
                 itemView.tvDistance.text = attempt.time
                 itemView.tvTime.text = date
-                if(!attempt.weather.isEmpty()) itemView.tvLocation.text = context.getString(R.string.result_weather, attempt.weather)
+                if(attempt.weather.isNotEmpty()) itemView.tvLocation.text = context.getString(R.string.result_weather, attempt.weather)
             }
         }
 }

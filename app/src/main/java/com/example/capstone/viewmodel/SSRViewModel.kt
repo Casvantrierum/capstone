@@ -1,13 +1,12 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.capstone.model.SSRResult
-import com.example.capstone.model.Skater
+import com.example.capstone.model.ssrPR.SSRResult
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.repository.SSRRepository
 import kotlinx.coroutines.launch
 

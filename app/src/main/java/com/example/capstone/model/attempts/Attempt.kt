@@ -1,4 +1,4 @@
-package com.example.capstone.model
+package com.example.capstone.model.attempts
 
 import com.google.firebase.Timestamp
 

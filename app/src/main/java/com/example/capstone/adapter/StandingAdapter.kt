@@ -1,13 +1,14 @@
 package com.example.capstone.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.capstone.model.Attempt
+import com.example.capstone.model.attempts.Attempt
 import com.example.capstone.R
-import com.example.capstone.model.Skater
+import com.example.capstone.model.skaters.Skater
 import kotlinx.android.synthetic.main.item_standing.view.*
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -35,6 +36,7 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun databind(attempt: Attempt, skater: Skater, position: Int) {
             val ranking = position+1
 

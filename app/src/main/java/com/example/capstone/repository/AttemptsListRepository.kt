@@ -1,22 +1,13 @@
 package com.example.capstone.repository
 
-import android.app.AlertDialog
-import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
-import android.net.ConnectivityManager
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.capstone.MainActivity
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.AttemptsList
+import com.example.capstone.model.attempts.Attempt
+import com.example.capstone.model.attempts.AttemptsList
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
-import java.sql.Date
-import java.text.SimpleDateFormat
 
 class AttemptsListRepository {
     private var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -64,7 +55,7 @@ class AttemptsListRepository {
                         list.addAll(documentsToAttemptsList(documents))
                     }
                     .await()
-                _attemptsList.value = AttemptsList(list);
+                _attemptsList.value = AttemptsList(list)
             }
         }  catch (e : Exception) {
             throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")
@@ -83,11 +74,8 @@ class AttemptsListRepository {
                         .addOnSuccessListener { documents ->
                             list.addAll(documentsToAttemptsList(documents))
                         }
-                        .addOnFailureListener {
-                            Log.i("OK3", "IN ON FAILURE")
-                        }
                         .await()
-                _attemptsList.value = AttemptsList(list);
+                _attemptsList.value = AttemptsList(list)
             }
         }  catch (e : Exception) {
             throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")
@@ -107,7 +95,7 @@ class AttemptsListRepository {
                         list.addAll(documentsToAttemptsList(documents))
                     }
                     .await()
-                _attemptsListOfSkater.value = AttemptsList(list);
+                _attemptsListOfSkater.value = AttemptsList(list)
             }
         }  catch (e : Exception) {
             throw AttemptRetrievalError("Retrieval-firebase-task was unsuccessful")

@@ -2,27 +2,18 @@ package com.example.capstone
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.capstone.viewmodel.AttemptsListViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
-import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.FirebaseFirestore
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.google.firebase.FirebaseApp.initializeApp
+import com.google.firebase.firestore.FirebaseFirestore.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,9 +34,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        FirebaseFirestore.setLoggingEnabled(true)
-        FirebaseApp.initializeApp(this)
-
+        //firebase actions
+        setLoggingEnabled(true)
+        initializeApp(this)
 
         val skatersListViewModel: SkatersListViewModel = ViewModelProvider(this).get(SkatersListViewModel::class.java)
         skatersListViewModel.getSkatersList()

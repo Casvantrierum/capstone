@@ -1,13 +1,11 @@
 package com.example.capstone.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.capstone.api.SSRApi
 import com.example.capstone.api.SSRApiService
-import com.example.capstone.model.SSRId.IDLookUpResult
-import com.example.capstone.model.SSRResult
-import com.example.capstone.model.Skater
+import com.example.capstone.model.ssrId.IDLookUpResult
+import com.example.capstone.model.ssrPR.SSRResult
 import kotlinx.coroutines.withTimeout
 
 class SSRRepository {
@@ -42,7 +40,6 @@ class SSRRepository {
             }
             _resultId.value = result
         } catch (error: Throwable) {
-            Log.i("OEPS", "no connection for SSR")
             throw SSRRefreshError("Unable to refresh speedskating id data", error)
         }
     }

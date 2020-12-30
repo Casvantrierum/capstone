@@ -1,9 +1,13 @@
 <component name="ProjectDictionaryState">
   <dictionary name="casva">
     <words>
+      <w>databind</w>
+      <w>familyname</w>
       <w>firstname</w>
+      <w>givenname</w>
       <w>lastname</w>
       <w>speedskating</w>
+      <w>trophee</w>
     </words>
   </dictionary>
 </component>

@@ -10,9 +10,6 @@ class SSRApi {
         // The base url off the api.
         private const val baseUrl = "https://speedskatingresults.com/api/json/"
 
-        /**
-         * @return [MovieListApiService] The service class off the retrofit client.
-         */
         fun createApi(): SSRApiService{
             // Create an OkHttpClient to be able to make a log of the network traffic
             val okHttpClient = OkHttpClient.Builder()

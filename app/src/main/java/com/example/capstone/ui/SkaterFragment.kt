@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
 import com.example.capstone.adapter.PersonalRecordAdapter
 import com.example.capstone.adapter.SkaterResultAdapter
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.SSRPersonalRecord
-import com.example.capstone.model.Skater
+import com.example.capstone.model.attempts.Attempt
+import com.example.capstone.model.ssrPR.SSRPersonalRecord
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
 import com.example.capstone.viewmodel.SSRViewModel
 import com.example.capstone.viewmodel.SkaterViewModel
@@ -30,7 +30,6 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import kotlinx.android.synthetic.main.fragment_skater.*
 import kotlinx.android.synthetic.main.item_standing.tvName
-
 
 class SkaterFragment : Fragment() {
 
@@ -51,7 +50,7 @@ class SkaterFragment : Fragment() {
 
     private var personalRecords = arrayListOf<SSRPersonalRecord>()
 
-    val CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
+    private val customTabPackageName = "com.android.chrome"
 
     private var mCustomTabsServiceConnection: CustomTabsServiceConnection? = null
     private var mClient: CustomTabsClient? = null
@@ -98,7 +97,7 @@ class SkaterFragment : Fragment() {
         }
 
         activity?.let { CustomTabsClient.bindCustomTabsService(
-                it, CUSTOM_TAB_PACKAGE_NAME,
+                it, customTabPackageName,
                 mCustomTabsServiceConnection as CustomTabsServiceConnection
         ) }
 

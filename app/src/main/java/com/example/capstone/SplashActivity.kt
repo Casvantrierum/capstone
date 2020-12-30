@@ -3,10 +3,7 @@ package com.example.capstone
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
-import com.example.capstone.viewmodel.AttemptsListViewModel
 
 class SplashActivity : AppCompatActivity() {
 
@@ -15,6 +12,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         // Use Handler to wait 1 second before opening the MainActivity.
+        @Suppress("DEPRECATION")
         Handler().postDelayed({
             startActivity(
                 Intent(
@@ -23,6 +21,6 @@ class SplashActivity : AppCompatActivity() {
                 )
             )
             finish()
-        }, 1000)
+        }, 2000)
     }
 }

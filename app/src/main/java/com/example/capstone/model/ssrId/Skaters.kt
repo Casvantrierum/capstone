@@ -1,4 +1,4 @@
-package com.example.capstone.model.SSRId
+package com.example.capstone.model.ssrId
 
 import com.google.gson.annotations.SerializedName
 

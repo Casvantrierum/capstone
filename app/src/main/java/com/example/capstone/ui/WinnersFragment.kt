@@ -2,7 +2,6 @@ package com.example.capstone.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.capstone.MainActivity
 import com.example.capstone.R
 import com.example.capstone.adapter.WinnersAdapter
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.Skater
+import com.example.capstone.model.attempts.Attempt
+import com.example.capstone.model.skaters.Skater
 import com.example.capstone.viewmodel.AttemptsListViewModel
 import com.example.capstone.viewmodel.SkaterViewModel
 import com.example.capstone.viewmodel.SkatersListViewModel
@@ -54,8 +52,8 @@ class WinnersFragment : Fragment() {
         val month = current.monthValue.toString().toInt()
         val year = current.year.toString().toInt() -1 //-1 beacuse currrent season is ongoing
 
-        if (month >= 6) lastCompleteSeason = year
-        else lastCompleteSeason = year - 1
+        lastCompleteSeason = if (month >= 6) year
+        else year - 1
     }
 
     override fun onCreateView(
@@ -106,7 +104,6 @@ class WinnersFragment : Fragment() {
         })
 
         skatersListViewModel.errorText.observe(viewLifecycleOwner, {
-            Log.i("OBSERVE", "W skaterslist errortext: $it")
             Toast.makeText(
                     requireActivity(), it,
                     Toast.LENGTH_SHORT
@@ -114,7 +111,6 @@ class WinnersFragment : Fragment() {
         })
 
         attemptsListViewModel.errorText.observe(viewLifecycleOwner, {
-            Log.i("OBSERVE", "W attemptslist errortext: $it")
             Toast.makeText(
                     requireActivity(), it,
                     Toast.LENGTH_SHORT

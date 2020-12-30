@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capstone.R
-import com.example.capstone.model.SSRPersonalRecord
+import com.example.capstone.model.ssrPR.SSRPersonalRecord
 import kotlinx.android.synthetic.main.item_ssr_result.view.*
 
 class PersonalRecordAdapter (private val personalRecords: List<SSRPersonalRecord>) :

@@ -18,7 +18,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvSeason"
         app:layout_constraintStart_toEndOf="@+id/tvSeason"
         app:layout_constraintTop_toTopOf="@+id/tvSeason"
-        app:tint="@color/colorAccent" />
+        app:tint="@color/colorAccent"
+        android:contentDescription="@string/image_button_up" />
 
     <ImageButton
         android:id="@+id/ibDown"
@@ -29,7 +30,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvSeason"
         app:layout_constraintEnd_toStartOf="@+id/tvSeason"
         app:layout_constraintTop_toTopOf="@+id/tvSeason"
-        app:tint="@color/colorAccent" />
+        app:tint="@color/colorAccent"
+        android:contentDescription="@string/image_button_down"/>
 
     <ProgressBar
         android:id="@+id/pbStanding"
@@ -54,7 +56,7 @@
             android:id="@+id/rbMale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:checked="true"
             android:text="@string/male" />
 
@@ -62,7 +64,7 @@
             android:id="@+id/rbFemale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:text="@string/female" />
     </RadioGroup>
 
@@ -71,7 +73,6 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +100,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:contentDescription="@string/fab" />
 
     <TextView
         android:id="@+id/tvNoSkaters"

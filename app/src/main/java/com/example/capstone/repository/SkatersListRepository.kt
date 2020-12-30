@@ -1,17 +1,11 @@
 package com.example.capstone.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.capstone.model.Attempt
-import com.example.capstone.model.Skater
-import com.example.capstone.model.SkatersList
-import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.example.capstone.model.skaters.Skater
+import com.example.capstone.model.skaters.SkatersList
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.util.Assert.fail
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
 
@@ -40,16 +34,16 @@ class SkatersListRepository {
         get() = _createSuccess
 
     private fun splitSkatersList(documents: QuerySnapshot) {
+
         val listAll = arrayListOf<Skater>()
         val listMale = arrayListOf<Skater>()
         val listFemale = arrayListOf<Skater>()
-        Log.i("OKIE","in splitList")
-        Log.i("OKIE", "documents size: ${documents.size()}")
+
         for (document in documents) {
             val id          = document.id.toInt()
-            var firstname    = document.data["firstname"].toString()
-            var lastname    = document.data["lastname"].toString()
-            var sex         = document.data["sex"].toString()
+            val firstname    = document.data["firstname"].toString()
+            val lastname    = document.data["lastname"].toString()
+            val sex         = document.data["sex"].toString()
             val ssrId       = document.data["ssrId"]?.toString()?.toInt()
             listAll.add(Skater(id, firstname, lastname, sex, ssrId))
             if (sex == "f") {
