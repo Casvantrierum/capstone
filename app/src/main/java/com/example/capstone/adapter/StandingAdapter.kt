@@ -46,7 +46,7 @@ class StandingAdapter (private val attemptsList: List<Attempt>, private val skat
             val netDate = Date(milliseconds)
             val date = sdf.format(netDate).toString()
 
-            itemView.tvYear.text = "$ranking."
+            itemView.tvYear.text = ranking.toString()
             itemView.tvName.text = "${skater.firstname} ${skater.lastname}"
             itemView.tvDistance.text = attempt.time
             itemView.tvTime.text = date
