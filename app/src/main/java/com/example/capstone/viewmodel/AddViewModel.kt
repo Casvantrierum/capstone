@@ -40,7 +40,11 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
             try {
                 if (new) {
                     ssrRepository.getSSRId(firstname, lastname)
-                    val ssrId = ssrRepository.resultId.value?.skaters?.get(0)?.id
+
+                    val ssrId: Int? = if (ssrRepository.resultId.value?.skaters?.isNotEmpty()!!){
+                        ssrRepository.resultId.value?.skaters?.get(0)?.id
+                    } else null
+
                     skatersListRepository.addSkater(
                             Skater(
                                     skitsID, firstname, lastname, sex, ssrId

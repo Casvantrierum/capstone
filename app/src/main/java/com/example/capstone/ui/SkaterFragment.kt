@@ -130,6 +130,8 @@ class SkaterFragment : Fragment() {
             skater = it
             tvName.text = it.toString()
 
+            if (it.ssrId == null) tvPRTitle.text = getString(R.string.empty_string)
+
             attemptsListViewModel.getAttemptsListSkater(skater.id)
             attemptsListViewModel.getAttemptsList(null)
             ssrViewModel.getSSRPersonalRecord(skater)
