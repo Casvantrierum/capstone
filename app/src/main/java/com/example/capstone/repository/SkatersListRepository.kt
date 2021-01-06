@@ -89,6 +89,7 @@ class SkatersListRepository {
         }
     }
 
+
     class SkatersListSaveError(message: String, cause: Throwable) : Exception(message, cause)
     class SkatersListRetrievalError(message: String) : Exception(message)
 }

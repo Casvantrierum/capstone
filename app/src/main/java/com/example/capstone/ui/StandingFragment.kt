@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_standing.*
 import java.time.LocalDateTime
+import java.util.*
 
 
 class StandingFragment : Fragment() {
@@ -149,6 +150,9 @@ class StandingFragment : Fragment() {
         }
 
         attemptsListViewModel.attemptsList.observe(viewLifecycleOwner, {
+
+            skatersListViewModel.getSkatersList()
+
             attemptsList.clear()
             attemptsList.addAll(it.attemptsList)
 
@@ -162,11 +166,10 @@ class StandingFragment : Fragment() {
             attemptsListFiltered.clear()
             attemptsListFiltered.addAll(it.attemptsList)
 
-
             if (attemptsListFiltered.isEmpty()) {
                 tvNoAttempts.visibility = View.VISIBLE
-                var sexFull = getString(R.string.female).toLowerCase()
-                if (sex == getString(R.string.male_short))  sexFull = getString(R.string.male).toLowerCase()
+                var sexFull = getString(R.string.female).toLowerCase(Locale.ROOT)
+                if (sex == getString(R.string.male_short))  sexFull = getString(R.string.male).toLowerCase(Locale.ROOT)
                 tvNoAttempts.text = getString(R.string.no_attempts_this_year, sexFull)
             } else tvNoAttempts.visibility = View.INVISIBLE
 
@@ -194,15 +197,11 @@ class StandingFragment : Fragment() {
                 skatersList.clear()
                 skatersList.addAll(maleSkatersList)
             }
-
-            attemptsListViewModel.getAttemptListFiltered(skatersList)
         })
 
         skatersListViewModel.femaleSkatersList.observe(viewLifecycleOwner, {
             femaleSkatersList.clear()
             femaleSkatersList.addAll(it.skatersList)
-
-            attemptsListViewModel.getAttemptListFiltered(skatersList)
 
             if (sex == getString(R.string.female_short)) {
                 skatersList.clear()
