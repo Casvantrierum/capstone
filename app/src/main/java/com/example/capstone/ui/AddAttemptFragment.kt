@@ -182,13 +182,13 @@ class AddAttemptFragment : Fragment(), AdapterView.OnItemSelectedListener{
         })
 
         addViewModel.createSuccess.observe(viewLifecycleOwner, {
-            if (it) {
+            if ( it == 2) {
                 Toast.makeText(
                         context, context?.getString(R.string.add_succesfull),
                         Toast.LENGTH_LONG
                 ).show()
             }
-            findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
+            if (it != 0) findNavController().navigate(R.id.action_addAttemptFragment_to_navigation_standing)
         })
     }
 

@@ -1,7 +1,6 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,8 +25,9 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
     val fetching: LiveData<Boolean>
         get() = _fetching
 
-    private val _createSuccess: MutableLiveData<Boolean> = MutableLiveData()
-    val createSuccess: LiveData<Boolean>
+    //2 for complete succes, 1 for added to fire store cache, 0 for failed to connect to ssr
+    private val _createSuccess: MutableLiveData<Int> = MutableLiveData()
+    val createSuccess: LiveData<Int>
         get() = _createSuccess
 
     private val _errorText: MutableLiveData<String> = MutableLiveData()
@@ -78,17 +78,22 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                         )
                 )
 
-                _createSuccess.value = true
+                _createSuccess.value = 2
 
             } catch (ex: SkatersListRepository.SkatersListSaveError) {
                 val errorMsg = "Something went wrong while adding a skater"
                 _errorText.value = errorMsg
-                _createSuccess.value = false
+                _createSuccess.value = 1
             }
             catch (ex: AttemptsListRepository.AttemptSaveError) {
                 val errorMsg = getApplication<Application>().resources.getString(R.string.error_add_attempt)
                 _errorText.value = errorMsg
-                _createSuccess.value = false
+                _createSuccess.value = 1
+            }
+            catch (ex: SSRRepository.SSRRefreshError) {
+                val errorMsg = getApplication<Application>().resources.getString(R.string.error_ssr_id)
+                _errorText.value = errorMsg
+                _createSuccess.value = 0
             }
 
             _fetching.value = false

@@ -83,6 +83,7 @@
     <string name="new_skater">New Skater</string>
 
 
-    <string name="error_add_attempt">Attempt will be added at later moment when internet connection is good.</string>
+    <string name="error_add_attempt">Attempt is saved, but will be added to the database at later moment when internet connection is good.</string>
     <string name="error_get_attempts">Couldn\'t retrieve updated attempts list.</string>
+    <string name="error_ssr_id">Couldn\'t connect to speedskating result, try again later. Or check your connection</string>
 </resources>
