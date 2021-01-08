@@ -100,7 +100,7 @@ class AttemptsListRepository {
                 _attemptsListOfSkater.value = AttemptsList(list)
             }
         }  catch (e : Exception) {
-            throw AttemptRetrievalError(Resources.getSystem().getString(R.string.error_get_attempts))
+            throw AttemptRetrievalError("Something went wrong while retreiving attempts list")
         }
     }
 
@@ -113,7 +113,7 @@ class AttemptsListRepository {
                         .await()
             }
         }  catch (e : Exception) {
-            throw AttemptSaveError(Resources.getSystem().getString(R.string.error_add_attempt), e)
+            throw AttemptSaveError("Something went wrong while adding an attempt", e)
         }
     }
 

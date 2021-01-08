@@ -1,10 +1,12 @@
 package com.example.capstone.viewmodel
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.capstone.R
 import com.example.capstone.model.attempts.Attempt
 import com.example.capstone.model.skaters.Skater
 import com.example.capstone.repository.AttemptsListRepository
@@ -79,12 +81,12 @@ class AddViewModel(application: Application) : AndroidViewModel(application)  {
                 _createSuccess.value = true
 
             } catch (ex: SkatersListRepository.SkatersListSaveError) {
-                val errorMsg = "Something went wrong while adding a skater" //todo hc
+                val errorMsg = "Something went wrong while adding a skater"
                 _errorText.value = errorMsg
                 _createSuccess.value = false
             }
             catch (ex: AttemptsListRepository.AttemptSaveError) {
-                val errorMsg = "Something went wrong while adding a n attempt"
+                val errorMsg = getApplication<Application>().resources.getString(R.string.error_add_attempt)
                 _errorText.value = errorMsg
                 _createSuccess.value = false
             }
